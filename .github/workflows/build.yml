@@ -49,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: emulator_tests_${{ matrix.EMULATOR_API }}
-          path: ./lib/build/outputs/code_coverage/debugAndroidTest/connected
+          path: ./BranchSearchSDK/build/outputs/code_coverage/debugAndroidTest/connected
