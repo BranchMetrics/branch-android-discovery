@@ -1,5 +1,6 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.branch.sdk.android/search/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.branch.sdk.android/search)
 [![Javadocs](http://javadoc-badge.appspot.com/io.branch.sdk.android/search.svg?label=javadoc)](http://javadoc-badge.appspot.com/io.branch.sdk.android/search)
+[![Build Status](https://github.com/BranchMetrics/branch-android-discovery/workflows/Build/badge.svg?event=push)](https://github.com/BranchMetrics/branch-android-discovery/actions)
 
 # Branch Discovery SDK
 
