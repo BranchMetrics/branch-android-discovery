@@ -22,13 +22,37 @@ jobs:
     name: Emulator Tests
     runs-on: macOS-latest
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        EMULATOR_API: [15, 21, 29]
+        EMULATOR_API: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
         include:
           - EMULATOR_API: 29
             EMULATOR_ARCH: x86_64
+          - EMULATOR_API: 28
+            EMULATOR_ARCH: x86_64
+          - EMULATOR_API: 27
+            EMULATOR_ARCH: x86_64
+          - EMULATOR_API: 26
+            EMULATOR_ARCH: x86_64
+          - EMULATOR_API: 25
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 24
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 23
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 22
+            EMULATOR_ARCH: x86
           - EMULATOR_API: 21
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 20
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 19
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 18
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 17
+            EMULATOR_ARCH: x86
+          - EMULATOR_API: 16
             EMULATOR_ARCH: x86
           - EMULATOR_API: 15
             EMULATOR_ARCH: x86
