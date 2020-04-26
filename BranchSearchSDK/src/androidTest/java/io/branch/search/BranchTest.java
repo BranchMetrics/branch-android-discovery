@@ -19,6 +19,7 @@ import io.branch.search.mock.MockActivity;
 /**
  * Base Instrumented test, which will execute on an Android device.
  */
+@RunWith(AndroidJUnit4.class)
 public class BranchTest {
     private Context mContext;
     private Activity mActivity;
@@ -38,6 +39,26 @@ public class BranchTest {
         mContext = null;
         mActivity.finish();
         mActivity = null;
+    }
+
+    @Test
+    public void testAppContext() {
+        // Context of the app under test.
+        Assert.assertNotNull(getTestContext());
+
+        // Context of the app as an Activity
+        Assert.assertNotNull(getUIContext());
+
+        // The two Context Objects are theoretically not the same
+        Assert.assertNotSame(getTestContext(), getUIContext());
+    }
+
+    @Test
+    public void testPackageName() {
+        // Context of the app under test.
+        Context appContext = getTestContext();
+
+        Assert.assertEquals("io.branch.search.test", appContext.getPackageName());
     }
 
     /**

@@ -65,7 +65,7 @@ public class BranchAnalytics {
     /**
      * Initialize Analytics in App.onCreate()
      */
-    public static void init(Application application) {
+    public static void init(Context application) {
         appContext = new WeakReference<Context>(application);
         analyticsInternal = new BranchAnalyticsInternal();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(analyticsInternal);

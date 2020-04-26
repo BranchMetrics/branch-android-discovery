@@ -1,8 +1,0 @@
-{
-  "@type": "intent",
-  "action": "android.settings.SETTINGS",
-  "extras": {
-    "foo1": "bar1",
-    "foo2": "bar2"
-  }
-}

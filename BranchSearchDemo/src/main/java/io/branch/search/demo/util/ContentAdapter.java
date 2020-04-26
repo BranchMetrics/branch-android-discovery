@@ -65,7 +65,7 @@ public class ContentAdapter extends BaseAdapter {
             BranchAppResult appResult = (BranchAppResult)result;
             ((ContentItem) convertView).showAppHeader(appResult);
         }
-        BranchAnalytics.trackImpressions(convertView, (TrackedEntity) convertView.getTag());
+        BranchAnalytics.trackImpressions(convertView, (TrackedEntity) result);
         return convertView;
     }
 

@@ -1,8 +1,0 @@
-{
-  "@type": "test_not_installed",
-  "package": "not.installed.package",
-  "links": [{
-    "@type": "view_intent",
-    "data": "https://google.com"
-  }]
-}

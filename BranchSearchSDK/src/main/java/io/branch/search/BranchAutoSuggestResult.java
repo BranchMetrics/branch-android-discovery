@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
@@ -43,11 +44,12 @@ public class BranchAutoSuggestResult implements Parcelable {
             JSONArray jsonArray = jsonObject.optJSONArray(KEY_RESULTS);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject autoSuggestion = jsonArray.getJSONObject(i);
-                    suggestions.add(new BranchAutoSuggestion(
-                            autoSuggestion.getString(KEY_SUGGESTION),
-                            requestId,
-                            autoSuggestion.getString(ResultId.getKey())));
+                    suggestions.add(new BranchAutoSuggestion(jsonArray.getString(i), requestId, UUID.randomUUID().toString()));
+//                    JSONObject autoSuggestion = jsonArray.getJSONObject(i);
+//                    suggestions.add(new BranchAutoSuggestion(
+//                            autoSuggestion.getString(KEY_SUGGESTION),
+//                            requestId,
+//                            autoSuggestion.getString(ResultId.getKey())));
                 }
             }
         } catch (JSONException ignore) { }

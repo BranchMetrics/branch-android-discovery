@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 import static io.branch.search.BranchDiscoveryRequest.KEY_RESULT_ID;
@@ -48,11 +49,12 @@ public class BranchQueryHintResult implements Parcelable {
             JSONArray jsonArray = jsonObject.optJSONArray(KEY_RESULTS);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject hintResult = jsonArray.getJSONObject(i);
-                    hints.add(new BranchQueryHint(
-                            hintResult.getString(KEY_SUGGESTION),
-                            requestId,
-                            hintResult.getString(KEY_RESULT_ID)));
+                    hints.add(new BranchQueryHint(jsonArray.getString(i), requestId, UUID.randomUUID().toString()));
+//                    JSONObject hintResult = jsonArray.getJSONObject(i);
+//                    hints.add(new BranchQueryHint(
+//                            hintResult.getString(KEY_SUGGESTION),
+//                            requestId,
+//                            hintResult.getString(KEY_RESULT_ID)));
                 }
             }
         } catch (JSONException ignore) { }

@@ -1,5 +1,0 @@
-{
-  "@type": "view_intent",
-  "data": "wrongpackage://wrong.wrong",
-  "forcePackage": "com.wrong.package"
-}

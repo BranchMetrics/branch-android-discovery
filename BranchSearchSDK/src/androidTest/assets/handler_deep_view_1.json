@@ -1,7 +1,0 @@
-{
-  "@type": "deep_view",
-  "links": [{
-    "@type": "view_intent",
-    "data": "https://play.google.com/store/apps/details?id=com.facebook.katana"
-  }]
-}

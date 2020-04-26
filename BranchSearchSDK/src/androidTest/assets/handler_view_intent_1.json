@@ -1,8 +1,0 @@
-{
-  "@type": "view_intent",
-  "data": "https://google.com",
-  "extras": {
-    "foo1": "bar1",
-    "foo2": "bar2"
-  }
-}

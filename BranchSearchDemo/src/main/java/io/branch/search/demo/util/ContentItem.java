@@ -171,11 +171,11 @@ public class ContentItem extends LinearLayout implements View.OnClickListener, V
         Object result = v.getTag();
         if (result instanceof BranchLinkResult) {
             BranchLinkResult linkResult = (BranchLinkResult)result;
-            linkResult.open(getContext());
+            linkResult.openContent(getContext(), true);
         } else {
             // Load app header
             BranchAppResult appResult = (BranchAppResult)result;
-            appResult.openApp(getContext(), true);
+            appResult.openSearchDeepLink(getContext(), true);
         }
     }
 

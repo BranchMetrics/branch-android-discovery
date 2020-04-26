@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
+
 /**
  * Main entry class for Branch Discovery. This class need to be initialized before accessing any Branch
  * discovery functionality.
@@ -35,6 +37,7 @@ public class BranchSearch {
      * @return this BranchSearch instance.
      */
     public static BranchSearch init(@NonNull Context context) {
+        BranchAnalytics.init(context);
         return init(context, new BranchConfiguration());
     }
 

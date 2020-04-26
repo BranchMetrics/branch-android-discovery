@@ -135,6 +135,7 @@ public class BranchSearchResultTest extends BranchTest {
         Assert.assertTrue(link.getScore() >= 0.0f);
         Assert.assertNotNull(link.getMetadata());
         Assert.assertNotNull(link.getRoutingMode());
+        Assert.assertNotNull(link.getWebLink());
         Assert.assertNotNull(link.getDestinationPackageName());
         Assert.assertNotNull(link.getClickTrackingUrl());
         Assert.assertNotNull(link.getRankingHint());

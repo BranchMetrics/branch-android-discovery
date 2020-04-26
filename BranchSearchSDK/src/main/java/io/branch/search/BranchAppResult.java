@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.sdk.android.search.analytics.TrackedEntity;
@@ -223,8 +224,10 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
                         packageName,
                         iconUrl,
                         deepviewExtraText,
+                        true,
                         requestId,
-                        linkResult.optString(KEY_RESULT_ID));
+                        linkResult.optString(KEY_RESULT_ID, UUID.randomUUID().toString()));
+//                        linkResult.optString(KEY_RESULT_ID));
                 if (link != null) {
                     links.add(link);
                 }

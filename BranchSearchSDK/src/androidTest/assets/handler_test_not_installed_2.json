@@ -1,8 +1,0 @@
-{
-  "@type": "test_not_installed",
-  "package": "io.branch.search.test",
-  "links": [{
-    "@type": "view_intent",
-    "data": "https://google.com"
-  }]
-}

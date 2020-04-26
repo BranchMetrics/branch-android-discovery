@@ -44,8 +44,6 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -57,82 +55,35 @@ import okhttp3.Response;
 /**
  * A dialog that can render deepviews.
  * Deepviews are renderer natively without using WebViews.
- *
- * The {@link BranchDeepViewFragment} does not represent the actual fragment.
- * Instead, it holds one and offers either the new version or the legacy (android.app.Fragment)
- * version using {@link #getInstance()} and {@link #getLegacyInstance()}.
  */
 public class BranchDeepViewFragment {
 
     public static final String TAG = "BranchDeepViewFragment";
 
-    private static final String KEY_PARENT = "parent";
-    private static final String KEY_HANDLERS = "handlers";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_IMAGE = "image";
-    private static final String KEY_DESCRIPTION = "description";
-    private static final String KEY_EXTRA = "extra";
-
+    private static final String KEY_LINK = "link";
     private static final OkHttpClient CLIENT = new OkHttpClient.Builder().build();
+
+    private static final String PLAY_STORE_APP_URL_PREFIX
+            = "https://play.google.com/store/apps/details?id=";
     private static final String APP_ICON_URL_SMALL_SUFFIX = "=s90";
 
-    private final BranchLinkResult parent;
-    private final ArrayList<BranchLinkHandler> handlers;
-    private final String title;
-    private final String description;
-    private final String image;
-    private final String extra;
-
-    BranchDeepViewFragment(@NonNull BranchLinkResult parent,
-                           @NonNull List<BranchLinkHandler> handlers,
-                           @NonNull String title,
-                           @NonNull String description,
-                           @NonNull String image,
-                           @NonNull String extra) {
-        this.parent = parent;
-        this.handlers = new ArrayList<>(handlers);
-        this.title = title;
-        this.description = description;
-        this.image = image;
-        this.extra = extra;
-    }
-
     @NonNull
-    private Bundle getArguments() {
-        Bundle args = new Bundle();
-        args.putParcelable(KEY_PARENT, parent);
-        args.putParcelableArrayList(KEY_HANDLERS, handlers);
-        args.putString(KEY_TITLE, title);
-        args.putString(KEY_DESCRIPTION, description);
-        args.putString(KEY_IMAGE, image);
-        args.putString(KEY_EXTRA, extra);
-        return args;
-    }
-
-    /**
-     * Returns a {@link DialogFragment} that can be shown either as a dialog
-     * or as a regular fragment.
-     * @return a fragment
-     */
-    @NonNull
-    public DialogFragment getInstance() {
+    static DialogFragment getInstance(@NonNull BranchLinkResult link) {
         DialogFragment fragment = new Modern();
-        fragment.setArguments(getArguments());
+        Bundle args = new Bundle();
+        args.putParcelable(KEY_LINK, link);
+        fragment.setArguments(args);
         fragment.setCancelable(true);
         return fragment;
     }
 
-    /**
-     * Returns a {@link android.app.DialogFragment} that can be shown either as
-     * a dialog or as a regular fragment.
-     * @deprecated please use {@link #getInstance()} instead
-     * @return a fragment
-     */
     @Deprecated
     @NonNull
-    public android.app.DialogFragment getLegacyInstance() {
+    static android.app.DialogFragment getLegacyInstance(@NonNull BranchLinkResult link) {
         android.app.DialogFragment fragment = new Legacy();
-        fragment.setArguments(getArguments());
+        Bundle args = new Bundle();
+        args.putParcelable(KEY_LINK, link);
+        fragment.setArguments(args);
         fragment.setCancelable(true);
         return fragment;
     }
@@ -214,42 +165,39 @@ public class BranchDeepViewFragment {
     }
 
     private static void setUpHierarchy(@NonNull final View root,
-                                       @NonNull final Bundle args,
+                                       @NonNull Bundle args,
                                        @NonNull final Runnable dismissRunnable) {
-        final BranchLinkResult parent = args.getParcelable(KEY_PARENT);
-        if (parent == null) return; // can't happen
+        final BranchLinkResult link = args.getParcelable(KEY_LINK);
+        if (link == null) return; // can't happen
 
         // App name
         TextView appName = root.findViewById(R.id.branch_deepview_app_name);
-        if (appName != null) loadText(appName, parent.getAppName());
+        if (appName != null) loadText(appName, link.getAppName());
 
         // App logo
         ImageView appIcon = root.findViewById(R.id.branch_deepview_app_icon);
         if (appIcon != null) {
-            loadImage(appIcon, parent.getAppIconUrl(), R.dimen.branch_deepview_app_icon_corners);
+            loadImage(appIcon, link.getAppIconUrl(), R.dimen.branch_deepview_app_icon_corners);
         }
 
         // Title
         TextView title = root.findViewById(R.id.branch_deepview_title);
-        String titleString = args.getString(KEY_TITLE);
-        if (title != null) loadText(title, titleString);
+        if (title != null) loadText(title, link.getName());
 
         // Description
         TextView description = root.findViewById(R.id.branch_deepview_description);
-        String descriptionString = args.getString(KEY_DESCRIPTION);
-        if (description != null) loadText(description, descriptionString);
+        if (description != null) loadText(description, link.getDescription());
 
         // Extra text
         TextView extra = root.findViewById(R.id.branch_deepview_extra);
-        String extraString = args.getString(KEY_EXTRA);
-        if (extra != null) loadText(extra, extraString);
+        if (extra != null) loadText(extra, link.deepview_extra_text);
 
         // Image
         ImageView image = root.findViewById(R.id.branch_deepview_image);
         if (image != null) {
-            String url = args.getString(KEY_IMAGE);
+            String url = link.getImageUrl();
             if (url != null
-                    && url.equals(parent.getAppIconUrl())
+                    && url.equals(link.getAppIconUrl())
                     && url.endsWith(APP_ICON_URL_SMALL_SUFFIX)) {
                 // Remove the =s90 at the end of our app icon urls. This makes them 90x90
                 // which is not suitable for fullscreen images.
@@ -262,13 +210,11 @@ public class BranchDeepViewFragment {
         Button button = root.findViewById(R.id.branch_deepview_button);
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
-                @SuppressWarnings("ConstantConditions")
                 @Override
                 public void onClick(View v) {
-                    List<BranchLinkHandler> handlers = args.getParcelableArrayList(KEY_HANDLERS);
-                    for (BranchLinkHandler handler : handlers) {
-                        if (handler.open(root.getContext(), parent)) break;
-                    }
+                    String url = PLAY_STORE_APP_URL_PREFIX + link.getDestinationPackageName();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    root.getContext().startActivity(intent);
                     dismissRunnable.run();
                 }
             });

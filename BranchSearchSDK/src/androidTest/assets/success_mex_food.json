@@ -1,22 +1,37 @@
-{  
+{
    "success":true,
    "request_id":"4d65c2ba-d88a-4356-a157-7ed04676b28e",
-   "results":[  
-      {  
+   "results":[
+      {
          "app_icon_url":"http://lh4.ggpht.com/F0F4Z965uf3psiHu5h77e-8o-Yla68BEaJI8xLfK-V3JkMK4yQv1WLqqZQCwYhDevKoa",
          "app_store_id":"com.yelp.android",
          "score":0.1441965701139767,
          "ranking_hint":"Trending near you",
+         "app_search_deep_link":{
+            "name":null,
+            "uri_scheme":null,
+            "score":1.001,
+            "metadata":{
+
+            },
+            "entity_id":8741903,
+            "web_link":"https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A%2F%2Fwww.yelp.com%2Fsearch%3Ffind_desc%3Dmexican&$ios_url=https%3A%2F%2Fwww.yelp.com%2Fsearch%3Ffind_desc%3Dmexican&$android_url=https%3A%2F%2Fwww.yelp.com%2Fsearch%3Ffind_desc%3Dmexican",
+            "description":null,
+            "type":"SearchQuery",
+            "image_url":null,
+            "routing_mode":"5"
+         },
          "app_name":"Yelp",
-         "deep_links":[  
-            {  
+         "deep_links":[
+            {
                "name":"Fog\u00f3n Cocina Mexicana",
+               "uri_scheme":null,
                "score":0.9362279492598684,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 320-7777",
                   "rating":4.5,
-                  "location":{  
+                  "location":{
                      "street":"600 E Pine St",
                      "longitude":-122.33563,
                      "state":"WA",
@@ -31,23 +46,21 @@
                   "review_count":"1107"
                },
                "entity_id":"0ce185bd-6f89-4505-a452-e005ad7182a4",
+               "web_link":"https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$ios_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$android_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2",
                "description":"Restaurant\n600 E Pine St, Seattle, WA\n",
                "type":"Restaurant",
                "image_url":"https://s3-media3.fl.yelpcdn.com/bphoto/lJoUuHgnkZ3_jslUhgw2qA/o.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$ios_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$android_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"El Borracho",
+               "uri_scheme":null,
                "score":0.9165558086371364,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 538-0440",
                   "rating":4.0,
-                  "location":{  
+                  "location":{
                      "street":"1521 1st Ave",
                      "longitude":-122.340411,
                      "state":"WA",
@@ -62,23 +75,21 @@
                   "review_count":"691"
                },
                "entity_id":"6d26cf52-395b-4ff0-a97d-4dc565ad3259",
+               "web_link":"https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/el-borracho-seattle&$ios_url=https%3A//www.yelp.com/biz/el-borracho-seattle&$android_url=https%3A//www.yelp.com/biz/el-borracho-seattle",
                "description":"Restaurant\n1521 1st Ave, Seattle, WA\n",
                "type":"Restaurant",
                "image_url":"https://s3-media4.fl.yelpcdn.com/bphoto/8B9nNUb2-pk11MwK1JXcQw/o.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$ios_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$android_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mezcaleria Oaxaca",
+               "uri_scheme":null,
                "score":0.9009534489415987,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 324-0506",
                   "rating":3.5,
-                  "location":{  
+                  "location":{
                      "street":"422 E Pine St",
                      "longitude":-122.325883,
                      "state":"WA",
@@ -93,23 +104,21 @@
                   "review_count":"286"
                },
                "entity_id":"1fc8ddf8-3560-4a32-844b-139ac325b526",
+               "web_link":"https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/mezcaleria-oaxaca-seattle-7&$ios_url=https%3A//www.yelp.com/biz/mezcaleria-oaxaca-seattle-7&$android_url=https%3A//www.yelp.com/biz/mezcaleria-oaxaca-seattle-7",
                "description":"Restaurant\n422 E Pine St, Seattle, WA\n",
                "type":"Restaurant",
                "image_url":"https://s3-media3.fl.yelpcdn.com/bphoto/6h57P9vrNwpxg2M5mIVK2A/o.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$ios_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$android_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Tacos Chukis",
+               "uri_scheme":null,
                "score":0.8994538108037511,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 328-4447",
                   "rating":4.5,
-                  "location":{  
+                  "location":{
                      "street":"219 Broadway E",
                      "longitude":-122.321282,
                      "state":"WA",
@@ -124,32 +133,44 @@
                   "review_count":"1371"
                },
                "entity_id":"f9e47fee-9388-4054-b070-186d41f4e0e8",
+               "web_link":"https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/tacos-chukis-seattle&$ios_url=https%3A//www.yelp.com/biz/tacos-chukis-seattle&$android_url=https%3A//www.yelp.com/biz/tacos-chukis-seattle",
                "description":"Restaurant\n219 Broadway E, Seattle, WA\n",
                "type":"Restaurant",
                "image_url":"https://s3-media1.fl.yelpcdn.com/bphoto/AU2LRinK4hKGU7nnCTq73Q/o.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://yelp.to/a/key_live_cgf22Tbs1bynw5NsRXmyqhpexycE0FFF?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$ios_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2&$android_url=https%3A//www.yelp.com/biz/fog%25C3%25B3n-cocina-mexicana-seattle-2"
-               }]
+               "routing_mode":"6"
             }
          ]
       },
-      {  
+      {
          "app_icon_url":"http://lh3.googleusercontent.com/81tvpT59weJbOGWT9jQ8_9RtcGXKCcVv59BU7Wl6PnS7okIgrS4iTCgwWpPQY2FRKw",
          "app_store_id":"com.joelapenna.foursquared",
          "score":0.10016271011397673,
          "ranking_hint":"Trending near you",
+         "app_search_deep_link":{
+            "name":null,
+            "uri_scheme":null,
+            "score":1.001,
+            "metadata":{
+
+            },
+            "entity_id":8743282,
+            "web_link":"https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2Fexplore%3Fquery%3Dmexican&$fallback_url=https%3A%2F%2Ffoursquare.com%2Fexplore%3Fll%3D47.612797%252C-122.34612%26mode%3Durl%26q%3Dmexican",
+            "description":null,
+            "type":"SearchQuery",
+            "image_url":null,
+            "routing_mode":"5"
+         },
          "app_name":"Foursquare",
-         "deep_links":[  
-            {  
+         "deep_links":[
+            {
                "name":"Fog\u00f3n Cocina Mexicana",
+               "uri_scheme":null,
                "score":0.9362279492598684,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 320-7777",
                   "rating":8.8,
-                  "location":{  
+                  "location":{
                      "street":"600 E Pine St",
                      "longitude":-122.33563,
                      "state":"WA",
@@ -164,23 +185,21 @@
                   "review_count":"385"
                },
                "entity_id":"0ce185bd-6f89-4505-a452-e005ad7182a4",
+               "web_link":"https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fe36e94e4b0391ded80a469&$fallback_url=https%3A//foursquare.com/v/4fe36e94e4b0391ded80a469",
                "description":"Restaurant\n600 E Pine St, Seattle, WA\nMexican Restaurant in Seattle, WA",
                "type":"Restaurant",
                "image_url":"https://igx.4sqi.net/img/general/600x600/10573445_61u5-PpHLQYxbZ_uTuMBptbMe535MaUWBEbWmdKlDzA.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fe36e94e4b0391ded80a469&$fallback_url=https%3A//foursquare.com/v/4fe36e94e4b0391ded80a469"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"El Borracho",
+               "uri_scheme":null,
                "score":0.9165558086371364,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 538-0440",
                   "rating":8.5,
-                  "location":{  
+                  "location":{
                      "street":"1521 1st Ave",
                      "longitude":-122.340411,
                      "state":"WA",
@@ -195,23 +214,21 @@
                   "review_count":"264"
                },
                "entity_id":"6d26cf52-395b-4ff0-a97d-4dc565ad3259",
+               "web_link":"https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fb68613e4b03322467127af&$fallback_url=https%3A//foursquare.com/v/4fb68613e4b03322467127af",
                "description":"Restaurant\n1521 1st Ave, Seattle, WA\nMexican Restaurant in Seattle, WA",
                "type":"Restaurant",
                "image_url":"https://igx.4sqi.net/img/general/600x600/38058087_3unCnFJDlCTYcu53UpuyzpcLLHX2MCxVxZ1U0GaXOx8.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fe36e94e4b0391ded80a469&$fallback_url=https%3A//foursquare.com/v/4fe36e94e4b0391ded80a469"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mezcaleria Oaxaca",
+               "uri_scheme":null,
                "score":0.9009534489415987,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 324-0506",
                   "rating":7.7,
-                  "location":{  
+                  "location":{
                      "street":"422 E Pine St",
                      "longitude":-122.325883,
                      "state":"WA",
@@ -226,23 +243,21 @@
                   "review_count":"221"
                },
                "entity_id":"1fc8ddf8-3560-4a32-844b-139ac325b526",
+               "web_link":"https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F530dbb56498e841e9823bdf5&$fallback_url=https%3A//foursquare.com/v/530dbb56498e841e9823bdf5",
                "description":"Restaurant\n422 E Pine St, Seattle, WA\nMexican Restaurant in Seattle, WA",
                "type":"Restaurant",
                "image_url":"https://igx.4sqi.net/img/general/600x600/30338_-Ztqo5pgCjjwSdcUKdJo3YxKc5oIug3NSi7RMlVqO2o.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fe36e94e4b0391ded80a469&$fallback_url=https%3A//foursquare.com/v/4fe36e94e4b0391ded80a469"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Tacos Chukis",
+               "uri_scheme":null,
                "score":0.8994538108037511,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 328-4447",
                   "rating":9.4,
-                  "location":{  
+                  "location":{
                      "street":"219 Broadway E",
                      "longitude":-122.321282,
                      "state":"WA",
@@ -257,32 +272,44 @@
                   "review_count":"477"
                },
                "entity_id":"f9e47fee-9388-4054-b070-186d41f4e0e8",
+               "web_link":"https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4d7ed31cebc15481e955e9a6&$fallback_url=https%3A//foursquare.com/v/4d7ed31cebc15481e955e9a6",
                "description":"Restaurant\n219 Broadway E, Seattle, WA\nTaco Place in Seattle, WA",
                "type":"Restaurant",
                "image_url":"https://igx.4sqi.net/img/general/600x600/712947_qqdjxspFMb9_8y3zjbnHORBDTMmSJ-CNwn4w7U0lUHE.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://to.4sq.com/a/key_live_nmm2Ae8J1GbSQXu22I7FTohhuwnTL9R0?$uri_redirect_mode=1&feature=branch_search&$deeplink_path=venues%2F4fe36e94e4b0391ded80a469&$fallback_url=https%3A//foursquare.com/v/4fe36e94e4b0391ded80a469"
-               }]
+               "routing_mode":"6"
             }
          ]
       },
-      {  
+      {
          "app_icon_url":"http://lh5.ggpht.com/cQrz8n4yOQmlSfkJJINC_b4gFpZYnBQorGGBuDB7zzDh_bWUgXqSt7xNx3_ZsvLMjHKa",
          "app_store_id":"com.postmates.android",
          "score":0.09806597744707996,
          "ranking_hint":"Trending near you",
+         "app_search_deep_link":{
+            "name":null,
+            "uri_scheme":null,
+            "score":1.001,
+            "metadata":{
+
+            },
+            "entity_id":8742353,
+            "web_link":"https://postmat.es/a/key_live_gdfSFGv9bguPWnP8D7JgHgmpCyen5mpZ?$uri_redirect_mode=1&feature=branch_search&$fallback_url=https%3A%2F%2Fpostmates.com%2Fsearch%3Fq%3Dmexican&$deeplink_path=v1%2Fsearch%3Fq%3Dmexican",
+            "description":null,
+            "type":"SearchQuery",
+            "image_url":null,
+            "routing_mode":"5"
+         },
          "app_name":"Postmates",
-         "deep_links":[  
-            {  
+         "deep_links":[
+            {
                "name":"Mezcaleria Oaxaca",
+               "uri_scheme":null,
                "score":0.9009534489415987,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 324-0506",
                   "rating":null,
-                  "location":{  
+                  "location":{
                      "street":"422 E Pine St",
                      "longitude":-122.325883,
                      "state":"WA",
@@ -297,24 +324,22 @@
                   "review_count":null
                },
                "entity_id":"1fc8ddf8-3560-4a32-844b-139ac325b526",
+               "web_link":"https://postmat.es/a/key_live_gdfSFGv9bguPWnP8D7JgHgmpCyen5mpZ?$uri_redirect_mode=1&feature=branch_action_bar&$fallback_url=https%3A//postmates.com/merchant/mezcaleria-oaxaca-422-e-pine-st&$deeplink_path=v1%2Fplaces%2F5af041e5-26a7-4b8b-9979-3637e8675da0",
                "description":"Restaurant\n422 E Pine St, Seattle, WA\nOrder Delivery from Mezcaleria Oaxaca on 422 E Pine St, Seattle,",
                "type":"Restaurant",
                "image_url":"https://raster-static.postmates.com/?url=http%3A%2F%2Fcom.postmates.img.prod.s3.amazonaws.com%2Fa6d855fd-989c-43f6-b9b1-9e1d092a4651%2Forig.jpg&quality=85&mode=auto&format=jpg&v=4&w=1200&h=720",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://postmat.es/a/key_live_gdfSFGv9bguPWnP8D7JgHgmpCyen5mpZ?$uri_redirect_mode=1&feature=branch_action_bar&$fallback_url=https%3A//postmates.com/merchant/mezcaleria-oaxaca-422-e-pine-st&$deeplink_path=v1%2Fplaces%2F5af041e5-26a7-4b8b-9979-3637e8675da0"
-               }]
+               "routing_mode":"6"
             }
          ]
       },
-      {  
-         "deep_links":[  
-            {  
+      {
+         "deep_links":[
+            {
                "name":"South Park Mexican",
+               "uri_scheme":null,
                "score":0.48835992324626376,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
@@ -322,79 +347,67 @@
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://content-images.p-cdn.com/images/public/devicead/6/3/2/r/daar9609465r236_500W_500H.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.pandora.com/artist/south-park-mexican/ARmlZ355fPXJcrV"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican",
+               "uri_scheme":null,
                "score":0.46662673619590067,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.pandora.com/artist/various-artists/mexican/AL9ZmhK3bgqpJc4",
                "description":"Album | Various Artists\n",
                "type":"Album",
                "image_url":"https://content-images.p-cdn.com/images/public/amz/8/2/7/2/881226972728_500W_500H.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.pandora.com/artist/south-park-mexican/ARmlZ355fPXJcrV"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Institute Of Sound",
+               "uri_scheme":null,
                "score":0.4388314936074935,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.pandora.com/artist/mexican-institute-of-sound/ARXnlcZlxkP52mK",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://content-images.p-cdn.com/images/public/rovi/portrait/3/9/4/5/MN0000975493_640W.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.pandora.com/artist/south-park-mexican/ARmlZ355fPXJcrV"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Dubwiser",
+               "uri_scheme":null,
                "score":0.4165085542393785,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.pandora.com/artist/mexican-dubwiser/ARtj3J2zttJbmxk",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://content-images.p-cdn.com/images/public/int/0/5/1/0/655036180150_500W_500H.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.pandora.com/artist/south-park-mexican/ARmlZ355fPXJcrV"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Radio",
+               "uri_scheme":null,
                "score":0.4029234728051,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.pandora.com/artist/mexican-radio/AR2hj4v6JvwnKP6",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://www.pandora.com/img/no_album_art.png",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.pandora.com/artist/south-park-mexican/ARmlZ355fPXJcrV"
-               }]
+               "routing_mode":"6"
             }
          ],
          "app_name":"Pandora Music",
@@ -403,92 +416,82 @@
          "score":0.07323030255082763,
          "ranking_hint":"Trending near you"
       },
-      {  
-         "deep_links":[  
-            {  
+      {
+         "deep_links":[
+            {
                "name":"Mexican Institute Of Sound",
+               "uri_scheme":null,
                "score":0.3285,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://i.scdn.co/image/384d0464bc30a1121546d083e690051a550765b3",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Dress",
+               "uri_scheme":null,
                "score":0.24654,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://open.spotify.com/track/14OGS3byKHAdkeEN4wTxxn",
                "description":"Song | Blood Red Shoes\n",
                "type":"Song",
                "image_url":null,
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"The Mexican",
+               "uri_scheme":null,
                "score":0.22596000000000002,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://open.spotify.com/track/6MssbPqsDjOmvuINzHKDNH",
                "description":"Song | GZA\n",
                "type":"Song",
                "image_url":null,
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Fender",
+               "uri_scheme":null,
                "score":0.22596000000000002,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://open.spotify.com/track/7LzdE75Ii1HLGWhhIJK4hD",
                "description":"Song | Weezer\n",
                "type":"Song",
                "image_url":null,
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Bean",
+               "uri_scheme":null,
                "score":0.21126000000000003,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://open.spotify.com/track/4kBGkavj8GDtDF7KD5Z3SD",
                "description":"Song | Mungo's Hi Fi\n",
                "type":"Song",
                "image_url":null,
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://open.spotify.com/artist/4TPTW3cTwUtiihgOMSQfmy"
-               }]
+               "routing_mode":"6"
             }
          ],
          "app_name":"Spotify Music",
@@ -497,21 +500,36 @@
          "score":0.06335,
          "ranking_hint":"Trending near you"
       },
-      {  
+      {
          "app_icon_url":"http://lh3.googleusercontent.com/8SfX0tOYVEy79kwfuatb_54Ro-HDySihjxvMtgBrrkTtjLraFK0O13VGmqAIP7g945Y",
          "app_store_id":"com.opentable",
          "score":0.05088359394742512,
          "ranking_hint":"Trending near you",
+         "app_search_deep_link":{
+            "name":null,
+            "uri_scheme":null,
+            "score":1.001,
+            "metadata":{
+
+            },
+            "entity_id":8742718,
+            "web_link":"https://www.opentable.com/s/?latitude=47.612797&longitude=-122.34612&term=mexican",
+            "description":null,
+            "type":"SearchQuery",
+            "image_url":null,
+            "routing_mode":"5"
+         },
          "app_name":"OpenTable",
-         "deep_links":[  
-            {  
+         "deep_links":[
+            {
                "name":"Fog\u00f3n Cocina Mexicana",
+               "uri_scheme":null,
                "score":0.9362279492598684,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 320-7777",
                   "rating":null,
-                  "location":{  
+                  "location":{
                      "street":"600 E Pine St",
                      "longitude":-122.33563,
                      "state":"WA",
@@ -526,23 +544,21 @@
                   "review_count":null
                },
                "entity_id":"0ce185bd-6f89-4505-a452-e005ad7182a4",
+               "web_link":"https://www.opentable.com/rest_profile_menu.aspx?rid=101761",
                "description":"Restaurant\n600 E Pine St, Seattle, WA\nWe are a family based restaurant with origins in Michoac\u00e1n, Mexi",
                "type":"Restaurant",
                "image_url":"https://resizer.otstatic.com/v2/photos/small/23665685.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.opentable.com/rest_profile_menu.aspx?rid=101761"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"El Borracho",
+               "uri_scheme":null,
                "score":0.9165558086371364,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 538-0440",
                   "rating":null,
-                  "location":{  
+                  "location":{
                      "street":"1521 1st Ave",
                      "longitude":-122.340411,
                      "state":"WA",
@@ -557,27 +573,25 @@
                   "review_count":null
                },
                "entity_id":"6d26cf52-395b-4ff0-a97d-4dc565ad3259",
+               "web_link":"https://www.opentable.com/el-borracho-seattle",
                "description":"Restaurant\n1521 1st Ave, Seattle, WA\n<p>El Borracho, a hip and fresh taqueria in Seattle's Pike Place",
                "type":"Restaurant",
                "image_url":null,
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.opentable.com/rest_profile_menu.aspx?rid=101761"
-               }]
+               "routing_mode":"6"
             }
          ]
       },
-      {  
-         "deep_links":[  
-            {  
+      {
+         "deep_links":[
+            {
                "name":"Fogon Cocina Mexicana",
+               "uri_scheme":"tripadvisor://tripadvisor.com/Restaurant_Review-g60878-d463480-Reviews-The_Green_Papaya-Seattle_Washington",
                "score":0.9362279492598684,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 320-7777",
                   "rating":4.5,
-                  "location":{  
+                  "location":{
                      "street":"600 E Pine St",
                      "longitude":-122.33563,
                      "state":"WA",
@@ -592,23 +606,21 @@
                   "review_count":"135"
                },
                "entity_id":"0ce185bd-6f89-4505-a452-e005ad7182a4",
+               "web_link":"http://www.tripadvisor.com/Restaurant_Review-g60878-d463480-Reviews-The_Green_Papaya-Seattle_Washington.html",
                "description":"Restaurant\n600 E Pine St, Seattle, WA\nFogon Cocina Mexicana, Seattle: See 135 unbiased reviews of Fogo",
                "type":"Restaurant",
                "image_url":"https://media-cdn.tripadvisor.com/media/photo-s/07/ac/f1/79/fogon-cocina-mexicana.jpg",
-               "routing_mode":"5",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "http://www.tripadvisor.com/Restaurant_Review-g60878-d463480-Reviews-The_Green_Papaya-Seattle_Washington.html"
-               }]
+               "routing_mode":"5"
             },
-            {  
+            {
                "name":"Mezcaleria Oaxaca",
+               "uri_scheme":"tripadvisor://tripadvisor.com/Restaurant_Review-g60878-d6615981-Reviews-Mezcaleria_Oaxaca-Seattle_Washington",
                "score":0.9009534489415987,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 324-0506",
                   "rating":4.0,
-                  "location":{  
+                  "location":{
                      "street":"422 E Pine St",
                      "longitude":-122.325883,
                      "state":"WA",
@@ -623,23 +635,21 @@
                   "review_count":"40"
                },
                "entity_id":"1fc8ddf8-3560-4a32-844b-139ac325b526",
+               "web_link":"https://www.tripadvisor.com/Restaurant_Review-g60878-d6615981-Reviews-Mezcaleria_Oaxaca-Seattle_Washington.html",
                "description":"Restaurant\n422 E Pine St, Seattle, WA\nMezcaleria Oaxaca, Seattle: See 40 unbiased reviews of Mezcaleri",
                "type":"Restaurant",
                "image_url":"https://media-cdn.tripadvisor.com/media/photo-s/0e/d9/26/c4/photo1jpg.jpg",
-               "routing_mode":"5",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "http://www.tripadvisor.com/Restaurant_Review-g60878-d463480-Reviews-The_Green_Papaya-Seattle_Washington.html"
-               }]
+               "routing_mode":"5"
             },
-            {  
+            {
                "name":"Tacos Chukis",
+               "uri_scheme":"tripadvisor://tripadvisor.com/Restaurant_Review-g60878-d2373315-Reviews-Tacos_Chukis-Seattle_Washington",
                "score":0.8994538108037511,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
                   "phone":"(206) 328-4447",
                   "rating":4.5,
-                  "location":{  
+                  "location":{
                      "street":"219 Broadway E",
                      "longitude":-122.321282,
                      "state":"WA",
@@ -654,14 +664,11 @@
                   "review_count":"52"
                },
                "entity_id":"f9e47fee-9388-4054-b070-186d41f4e0e8",
+               "web_link":"http://www.tripadvisor.com/Restaurant_Review-g60878-d2373315-Reviews-Tacos_Chukis-Seattle_Washington.html",
                "description":"Restaurant\n219 Broadway E, Seattle, WA\nTacos Chukis, Seattle: See 52 unbiased reviews of Tacos Chukis, ",
                "type":"Restaurant",
                "image_url":"https://media-cdn.tripadvisor.com/media/photo-s/07/2a/1a/8e/tacos-chukis.jpg",
-               "routing_mode":"5",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "http://www.tripadvisor.com/Restaurant_Review-g60878-d463480-Reviews-The_Green_Papaya-Seattle_Washington.html"
-               }]
+               "routing_mode":"5"
             }
          ],
          "app_name":"Tripadvisor",
@@ -670,92 +677,82 @@
          "score":0.04729558681675364,
          "ranking_hint":"Trending near you"
       },
-      {  
-         "deep_links":[  
-            {  
+      {
+         "deep_links":[
+            {
                "name":"South Park Mexican",
+               "uri_scheme":null,
                "score":0.4252970458708841,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://music.amazon.com/artists/B000QJVA0Y",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://images-na.ssl-images-amazon.com/images/G/01/digital/music/webcomponents/ogre/OpenGraphDefault_new_logo._V516206468_.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://music.amazon.com/artists/B000QJVA0Y"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Border Brass Ensemble",
+               "uri_scheme":null,
                "score":0.33441566056967686,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://music.amazon.com/artists/B001D5DB2A",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://images-na.ssl-images-amazon.com/images/G/01/digital/music/webcomponents/ogre/OpenGraphDefault_new_logo._V516206468_.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://music.amazon.com/artists/B000QJVA0Y"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Institute Of Sound",
+               "uri_scheme":null,
                "score":0.33441566056967686,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://music.amazon.com/artists/B000QKIILC",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://images-na.ssl-images-amazon.com/images/G/01/digital/music/webcomponents/ogre/OpenGraphDefault_new_logo._V516206468_.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://music.amazon.com/artists/B000QJVA0Y"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican",
+               "uri_scheme":null,
                "score":0.3,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://music.amazon.com/artists/B001N3V90I",
                "description":"Artist",
                "type":"Artist",
                "image_url":"https://images-na.ssl-images-amazon.com/images/G/01/digital/music/webcomponents/ogre/OpenGraphDefault_new_logo._V516206468_.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://music.amazon.com/artists/B000QJVA0Y"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Fender",
+               "uri_scheme":null,
                "score":0.27139697216682984,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://music.amazon.com/albums/B074Q31SCL?do=play&trackAsin=B074Q34CDC",
                "description":"Song | Weezer\n",
                "type":"Song",
                "image_url":"https://m.media-amazon.com/images/I/61IsCvnr05L._US510_SR1200,630_BG34,43,59_PJamznMusicLogoSticker1x,TopLeft,60,60_OU11_.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://music.amazon.com/artists/B000QJVA0Y"
-               }]
+               "routing_mode":"6"
             }
          ],
          "app_name":"Amazon Music",
@@ -764,92 +761,82 @@
          "score":0.023030307783503963,
          "ranking_hint":"Trending near you"
       },
-      {  
-         "deep_links":[  
-            {  
+      {
+         "deep_links":[
+            {
                "name":"Mexican Fender",
+               "uri_scheme":null,
                "score":0.3752489854852146,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA",
                "description":"Song | Weezer\n",
                "type":"Song",
                "image_url":"https://c.saavncdn.com/556/Mexican-Fender-English-2017-20170811180247-500x500.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Lingo",
+               "uri_scheme":null,
                "score":0.2951432016397042,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.saavn.com/s/album/english/Mexican-Lingo-2013/YY1x5bC3ejE",
                "description":"Album | Future\n",
                "type":"Album",
                "image_url":"https://c.saavncdn.com/969/Mexican-Lingo-English-2013-500x500.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Joe",
+               "uri_scheme":null,
                "score":0.2793499249601316,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.saavn.com/s/album/english/Mexican-Joe-2011/95aHM-YAEm0",
                "description":"Album | Jim Reeves\n",
                "type":"Album",
                "image_url":"https://c.saavncdn.com/658/Mexican-Joe-English-2011-500x500.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican Joe",
+               "uri_scheme":null,
                "score":0.2793499249601316,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.saavn.com/s/album/english/Mexican-Joe-2008/dSkXTnXZxes",
                "description":"Album | Jim Reeves\n",
                "type":"Album",
                "image_url":"https://c.saavncdn.com/235/Mexican-Joe-English-2008-500x500.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA"
-               }]
+               "routing_mode":"6"
             },
-            {  
+            {
                "name":"Mexican",
+               "uri_scheme":null,
                "score":0.23825899241458112,
                "ranking_hint":"Trending near you",
-               "metadata":{  
+               "metadata":{
 
                },
                "entity_id":null,
+               "web_link":"https://www.saavn.com/s/song/english/George-Kush-da-Button:-Dont-Pass-Trump-the-Blunt/Mexican/LxxYAxBFVHo",
                "description":"Song | Smoke Dza\n",
                "type":"Song",
                "image_url":"https://c.saavncdn.com/543/George-Kush-da-Button-Don-t-Pass-Trump-the-Blunt-English-2016-500x500.jpg",
-               "routing_mode":"6",
-               "linking": [{
-                  "@type": "view_intent",
-                  "data": "https://www.saavn.com/s/song/english/Mexican-Fender/Mexican-Fender/FAk4SDMIAEA"
-               }]
+               "routing_mode":"6"
             }
          ],
          "app_name":"Saavn Music & Radio",

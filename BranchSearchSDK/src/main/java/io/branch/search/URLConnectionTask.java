@@ -29,7 +29,7 @@ import okhttp3.internal.http2.StreamResetException;
 /**
  * URLConnection Task.
  */
-class  URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
+class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
 
     private static final MediaType POST_JSON = MediaType.parse("application/json; charset=utf-8");
     private static final long CONFIG_TIMEOUT_MILLIS = 6000;

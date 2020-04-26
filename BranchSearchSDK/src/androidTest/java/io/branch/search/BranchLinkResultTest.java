@@ -3,13 +3,10 @@ package io.branch.search;
 import android.os.Parcel;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import io.branch.search.util.AssetUtils;
 
 /**
  * BranchLinkResult class tests.
@@ -18,11 +15,11 @@ import io.branch.search.util.AssetUtils;
 public class BranchLinkResultTest extends BranchTest {
 
     @Test
-    public void testParcelable_keepsEmptyStrings() throws JSONException  {
-        // Create a BranchLinkResult from sample JSON
-        JSONObject json = new JSONObject(AssetUtils.readJsonFile(getTestContext(), "link_example.json"));
-        BranchLinkResult link1 = BranchLinkResult.createFromJson(json,
-                "appName", "appStoreId", "appIconUrl", "", "", "");
+    public void testParcelable_keepsEmptyStrings() {
+        // Create a BranchLinkResult that's as empty as possible - from empty JSON
+        JSONObject empty = new JSONObject();
+        BranchLinkResult link1 = BranchLinkResult.createFromJson(empty,
+                "appName", "appStoreId", "appIconUrl", "", true, "","");
         Assert.assertNotNull(link1);
 
         // Ensure missing fields are actually ""s, and the others were correctly set.

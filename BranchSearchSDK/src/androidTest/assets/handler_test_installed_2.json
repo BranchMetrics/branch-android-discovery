@@ -1,8 +1,0 @@
-{
-  "@type": "test_installed",
-  "package": "wrong.wrong.wrong",
-  "links": [{
-    "@type": "view_intent",
-    "data": "https://google.com"
-  }]
-}

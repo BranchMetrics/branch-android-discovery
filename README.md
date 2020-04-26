@@ -247,9 +247,9 @@ The BranchSearchResult object is returned to you from a successful query and con
 
 | Method | Return Type | Description |
 | - | - | - |
-| `getBranchSearchRequest()` | `BranchSearchRequest` | The original search request of format `BranchSearchRequest` that triggered this specific set of results. Note that you can reference the original query by calling `getQuery()` on this object. |
-| `getCorrectedQuery()` | `String` | If this field is non-null, it will represent the spell-corrected query that was actually used to search. Recommend that you show feedback to user such as "Showing results for + <corrected query>" |
-| `getResults()` | `List<BranchAppResult>` | A list of `BranchAppResult` objects representing the application results matched for the search request. Attached to each object is also the deep link list to show in this group. |
+| getBranchSearchRequest | `BranchSearchRequest` | The original search request of format `BranchSearchRequest` that triggered this specific set of results. Note that you can reference the original query by calling `getQuery()` on this object. |
+| getCorrectedQuery | String | If this field is non-null, it will represent the spell-corrected query that was actually used to search. Recommend that you show feedback to user such as "Showing results for + <corrected query>" |
+| getResults | List<`BranchAppResult`> | A list of `BranchAppResult` objects representing the application results matched for the search request. Attached to each object is also the deep link list to show in this group. |
 
 ### BranchAppResult class
 
@@ -257,11 +257,14 @@ Branch will return to you a list of relevants apps for each query, similar to if
 
 | Method | Return Type | Description |
 | - | - | - |
-| `getAppName()` | `String` | Gets the name of the app for display |
-| `getPackageName()` | `String` | Gets the package name of the app |
-| `getAppIconUrl()` | `String` | Gets the URL of the app icon for display |
-| `getDeepLinks()` | `List` | Gets the list of `BranchLinkResult` objects for display |
-| `openApp(Context, boolean fallbackToPlayStore)` | `BranchSearchError` | If you just want to open the app without searching, use this method. Specify as argument whether you want the user to go to the Play Store when app is not installed |
+| getAppName | String | Gets the name of the app for display |
+| getPackageName | String | Gets the package name of the app |
+| getAppIconUrl | String | Gets the URL of the app icon for display |
+| getDeepLinks | List | Gets the list of `BranchLinkResult` objects for display |
+| | | |
+| openSearchDeepLink(Context, Boolean fallbackToPlayStore) | BranchSearchError | The method to trigger when a user clicks on the header. This will attempt to trigger the search deep link to continue the user query in the app. Some apps dox not support this, and the fallback will trigger openApp. |
+| isSearchDeepLinkAvailable() | boolean | This method will return true if the search deep link is available. This can be used to change the UI based on its presence. |
+| openApp(Context, boolean fallbackToPlayStore) | BranchSearchError | If you just want to open the app without searching, use this method. Specify as argument whether you want the user to go to the Play Store when app is not installed |
 
 
 #### BranchLinkResult class
@@ -270,15 +273,19 @@ Branch will also return relevant content to the user query. These are deep links
 
 | Method | Return Type | Description |
 | - | - | - |
-| `getName()` | `String` | Gets the title of the content for display |
-| `getDescription()` | `String` | Gets the description of the content for display |
-| `getImageUrl()` | `String` | Gets the URL of the content image for display |
-| `isAd()` | `boolean` | Is this link an advertisement -- e.g. a sponsored result |
-| `open(Context)` | `BranchSearchError` | Branch is great at deep link routing, so we wanted to abstract away this complexity from you. When a user taps on an action, you simply need to call `open()` to trigger the user to be routed to the content or website. |
+| getName | String | Gets the title of the content for display |
+| getDescription | String | Gets the description of the content for display |
+| getImageUrl | String | Gets the URL of the content image for display |
+| isAd | boolean | Is this link an advertisement -- e.g. a sponsored result |
+| | | |
+| openContent(Context, boolean fallbackToPlayStore) | BranchSearchError | Branch is great at deep link routing, so we wanted to abstract away this complexity from you. When a user taps on an action, you simply need to call `completeAction()` to trigger the user to be routed to the content or website. |
+| openDeepView(FragmentManager) | BranchSearchError | Opens the link into a [Branch Deepview](https://branch.io/deepviews/). The content preview will be rendered inside a in-app web view with the option to download the app from the play store. |
+| registerClickEvent() | none | If you decide to handle routing on your own with the URI scheme / web link included in the link result, please call this method when the user taps. _This is not required if you use openContent or openDeepView_ |
+
 
 ## Handling errors with `BranchSearchError`
 
-The only thing consistent when working in mobile is that the network can fail regularly. Plus, there are all sorts of other reasons your search request might fail. Inevitably, you'll need to handle the variety of reasons why the request might fail, and we started to accumulate some of the common ones we see. 
+The only thing consistent when working in mobile is that the network can fail regularly. Plus, there are all sorts of other reasons your search request might fail. Inevitably, you'll need to handle the variety of reasons why the request might fail, and we started to accumulate some of the common ones we see.
 
 #### BranchSearchError class
 
@@ -320,4 +327,3 @@ Branch provides an easy way to override how the SDK accesses the LauncherApps Se
 | - | - | - |
 | validateShortcut | boolean | Validates whether shortcut with given `id` and `package` name is valid. Should return `true` if the specified shortcut is active. |
 | launchShortcut | boolean | Attempts to launch shortcut with given `id` and `package` name. Should return `true` if shortcut is successfully launched. |
-
