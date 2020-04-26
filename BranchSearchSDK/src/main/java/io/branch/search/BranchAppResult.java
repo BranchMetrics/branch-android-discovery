@@ -224,7 +224,7 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
                         packageName,
                         iconUrl,
                         deepviewExtraText,
-                        true,
+                        isInstalled,
                         requestId,
                         linkResult.optString(KEY_RESULT_ID, UUID.randomUUID().toString()));
 //                        linkResult.optString(KEY_RESULT_ID));
