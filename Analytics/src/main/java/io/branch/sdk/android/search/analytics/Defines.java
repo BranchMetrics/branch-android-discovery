@@ -1,15 +1,20 @@
 package io.branch.sdk.android.search.analytics;
 
+import android.support.annotation.NonNull;
+
 public class Defines {
 
     public enum AnalyticsJsonKey {
-
-        // APIs
+        // API keys
         Hints("hints"),
         Autosuggest("autosuggest"),
         Search("search"),
 
-        // Generic
+        // array keys
+        Clicks("clicks"),
+        Impressions("impressions"),
+
+        // value keys
         BranchKey("branch_key"),
         DeviceInfo("device_info"),
         ConfigInfo("config_info"),
@@ -28,18 +33,17 @@ public class Defines {
         RoundTripTime("round_trip_time"),
         StatusCode("status_code");
 
-        private String key = "";
+        @NonNull private String key = "";
 
-        AnalyticsJsonKey(String key) {
+        AnalyticsJsonKey(@NonNull String key) {
             this.key = key;
         }
 
-        public String getKey() {
+        @NonNull public String getKey() {
             return key;
         }
 
-        @Override
-        public String toString() {
+        @Override @NonNull public String toString() {
             return key;
         }
     }

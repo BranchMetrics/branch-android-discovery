@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,6 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Area;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Clicks;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Impressions;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Timestamp;
 
 // todo register receiver for ACTION_SHUTDOWN intent to clean up (https://developer.android.com/reference/android/content/Intent.html#ACTION_SHUTDOWN)
@@ -28,7 +31,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     private static final String BNC_ANALYTICS_NO_VAL = "BNC_ANALYTICS_NO_VAL";
 
     @NonNull String sessionId = BNC_ANALYTICS_NO_VAL;
-    static BranchAnalyticsInternal instance;
+    private static BranchAnalyticsInternal instance;
 
     // default clicks and impressions
     private List<JSONObject> clicks = Collections.synchronizedList(new LinkedList<JSONObject>());
@@ -44,6 +47,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     private final ConcurrentHashMap<String, Integer> trackedInts = new ConcurrentHashMap<>();// e.g. ???
     private final ConcurrentHashMap<String, Double> trackedDoubles = new ConcurrentHashMap<>();// e.g. ???
     private final ConcurrentHashMap<String, JSONArray> trackedArrays = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, ?>[] trackedValues = new ConcurrentHashMap[]{trackedObjects, trackedStrings, trackedInts, trackedDoubles, trackedArrays};
 
     // static values
     private final ConcurrentHashMap<String, JSONObject> staticObjects = new ConcurrentHashMap<>();// e.g. "device_info", "sdk_config"
@@ -51,6 +55,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     private final ConcurrentHashMap<String, Integer> staticInts = new ConcurrentHashMap<>();// e.g. "empty_sessions"
     private final ConcurrentHashMap<String, Double> staticDoubles = new ConcurrentHashMap<>();// e.g. ???
     private final ConcurrentHashMap<String, JSONArray> staticArrays = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, ?>[] staticValues = new ConcurrentHashMap[]{staticObjects, staticStrings, staticInts, staticDoubles, staticArrays};
 
     private int emptySessionCount = 0;
 
@@ -80,17 +85,28 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         Log.d(LOGTAG, "Moving to background");
         if (!isEmptySession()) {
             startUpload(formatPayload());
-            emptySessionCount = 0;
             cleanupSessionData();
         } else {
             emptySessionCount++;
         }
-        // cleanup
         sessionId = BNC_ANALYTICS_NO_VAL;
     }
 
     private void cleanupSessionData() {
-        //todo clear the maps
+        emptySessionCount = 0;
+        for (ConcurrentHashMap<String, ?> trackedValuesOfCertainType : trackedValues) {
+            trackedValuesOfCertainType.clear();
+        }
+        clicks.clear();
+        impressions.clear();
+        impressionsPerApi.clear();
+        clicksPerApi.clear();
+    }
+
+    void clearStaticValues() {
+        for (ConcurrentHashMap<String, ?> trackedValuesOfCertainType : staticValues) {
+            trackedValuesOfCertainType.clear();
+        }
     }
 
     private boolean isEmptySession() {
@@ -157,55 +173,46 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
         JSONObject payload = new JSONObject();
         try {
+            // expected values
             payload.putOpt("analytics_window_id", sessionId);
             payload.putOpt("empty_sessions", emptySessionCount);
 
-            // top level: static data not related to user actions
-            for (Map.Entry<String, String> staticStringEntry : staticStrings.entrySet()) {
-                payload.putOpt(staticStringEntry.getKey(), staticStringEntry.getValue());
-            }
-            for (Map.Entry<String, Integer> staticIntEntry : staticInts.entrySet()) {
-                payload.putOpt(staticIntEntry.getKey(), staticIntEntry.getValue());
-            }
-            for (Map.Entry<String, Double> staticDoubleEntry : staticDoubles.entrySet()) {
-                payload.putOpt(staticDoubleEntry.getKey(), staticDoubleEntry.getValue());
-            }
-            for (Map.Entry<String, JSONArray> staticDoubleEntry : staticArrays.entrySet()) {
-                payload.putOpt(staticDoubleEntry.getKey(), staticDoubleEntry.getValue());
-            }
-            for (Map.Entry<String, JSONObject> staticObjectEntry : staticObjects.entrySet()) {
-                payload.putOpt(staticObjectEntry.getKey(), staticObjectEntry.getValue());
-            }
+            // values added by client
+            loadCustomValues(payload, staticValues);
+            loadCustomValues(payload, trackedValues);
+            loadClicksAndImpressions(payload);
 
-            // top level: records of user actions
-            for (Map.Entry<String, String> trackedStringEntry : trackedStrings.entrySet()) {
-                payload.putOpt(trackedStringEntry.getKey(), trackedStringEntry.getValue());
-            }
-            for (Map.Entry<String, Integer> trackedIntEntry : trackedInts.entrySet()) {
-                payload.putOpt(trackedIntEntry.getKey(), trackedIntEntry.getValue());
-            }
-            for (Map.Entry<String, Double> trackedDoubleEntry : trackedDoubles.entrySet()) {
-                payload.putOpt(trackedDoubleEntry.getKey(), trackedDoubleEntry.getValue());
-            }
-            for (Map.Entry<String, JSONArray> trackedDoubleEntry : trackedArrays.entrySet()) {
-                payload.putOpt(trackedDoubleEntry.getKey(), trackedDoubleEntry.getValue());
-            }
-            for (Map.Entry<String, JSONObject> trackedObjectEntry : trackedObjects.entrySet()) {
-                payload.putOpt(trackedObjectEntry.getKey(), trackedObjectEntry.getValue());
-            }
-
-            // 2nd level: records of common user actions that can will be grouped together
-            for (Map.Entry<String, List<JSONObject>> apiClickEntry : clicksPerApi.entrySet()) {
-                payload.putOpt(apiClickEntry.getKey() + "_clicks", new JSONArray(apiClickEntry.getValue()));
-            }
-            for (Map.Entry<String, List<JSONObject>> apiImpressionEntry : impressionsPerApi.entrySet()) {
-                payload.putOpt(apiImpressionEntry.getKey() + "_impressions", new JSONArray(apiImpressionEntry.getValue()));
-            }
-            // todo validate json when it's being added/tracked anywhere
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return payload;
+    }
+
+    private void loadClicksAndImpressions(JSONObject payload) throws JSONException {
+        for (Map.Entry<String, List<JSONObject>> apiClickEntry : clicksPerApi.entrySet()) {
+            payload.putOpt(apiClickEntry.getKey() + "_" + Clicks.getKey(), new JSONArray(apiClickEntry.getValue()));
+        }
+        for (Map.Entry<String, List<JSONObject>> apiImpressionEntry : impressionsPerApi.entrySet()) {
+            payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions.getKey(), new JSONArray(apiImpressionEntry.getValue()));
+        }
+        if (!clicks.isEmpty()) {
+            payload.putOpt(Clicks.getKey(), new JSONArray(clicks));
+        }
+        if (!impressions.isEmpty()) {
+            payload.putOpt(Impressions.getKey(), new JSONArray(impressions));
+        }
+    }
+
+    private void loadCustomValues(JSONObject payload, ConcurrentHashMap<String, ?>[] allValues) {
+        for (ConcurrentHashMap<String, ?> staticValuesOfCertainType : allValues) {
+            for (Map.Entry<String, ?> allValuesOfCertainType : staticValuesOfCertainType.entrySet()) {
+                try {
+                    payload.putOpt(allValuesOfCertainType.getKey(), allValuesOfCertainType.getValue());
+                } catch (JSONException ignored) {
+                    Log.i(LOGTAG, "failed to load values of type: " + allValuesOfCertainType.getKey());
+                }
+            }
+        }
     }
 
     /**
@@ -237,23 +244,44 @@ class BranchAnalyticsInternal implements LifecycleObserver {
      * and not related to the user behavior. If static data is the only data recorded during this session,
      * we will treat it as an empty session and will not make the upload to the servers.
      */
-    void addObject(@NonNull String key, @NonNull JSONObject staticObject) {
-        staticObjects.put(key, staticObject);
+    void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
+        if (staticObject == null) {
+            staticObjects.remove(key);
+        } else {
+            staticObjects.put(key, staticObject);
+        }
     }
 
-    void addString(@NonNull String key, @NonNull String staticString) {
-        staticStrings.put(key, staticString);
+    void addString(@NonNull String key, @Nullable String staticString) {
+        if (staticString == null) {
+            staticStrings.remove(key);
+        } else {
+            staticStrings.put(key, staticString);
+        }
     }
 
-    void addInt(@NonNull String key, @NonNull Integer staticInt) {
+    void addInt(@NonNull String key, @Nullable Integer staticInt) {
+        if (staticInt == null) {
+            staticInts.remove(key);
+        } else {
+            staticInts.put(key, staticInt);
+        }
         staticInts.put(key, staticInt);
     }
 
-    void addDouble(@NonNull String key, @NonNull Double staticDouble) {
-        staticDoubles.put(key, staticDouble);
+    void addDouble(@NonNull String key, @Nullable Double staticDouble) {
+        if (staticDouble == null) {
+            staticDoubles.remove(key);
+        } else {
+            staticDoubles.put(key, staticDouble);
+        }
     }
 
-    void addArray(@NonNull String key, @NonNull JSONArray staticArray) {
-        staticArrays.put(key, staticArray);
+    void addArray(@NonNull String key, @Nullable JSONArray staticArray) {
+        if (staticArray == null) {
+            staticArrays.remove(key);
+        } else {
+            staticArrays.put(key, staticArray);
+        }
     }
 }

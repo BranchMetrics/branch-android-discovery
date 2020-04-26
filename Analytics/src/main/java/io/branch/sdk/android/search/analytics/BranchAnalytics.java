@@ -1,12 +1,10 @@
 package io.branch.sdk.android.search.analytics;
 
-import android.app.Application;
 import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -41,15 +39,21 @@ import java.lang.ref.WeakReference;
  *      TODO overload the above with 'String jsonParentKey'
  *
  * If there are tracked 'clicks', 'impressions' or custom objects, the upload to the server does not
- * happen but the count of these empty sessions is kept and reported in the next upload. Finally, there
- * are APIs to 'add' objects to the payload, these objects are considered static or, otherwise, not
- * important enough to post them to the server in the case there are no tracked events.
+ * happen but the count of these empty sessions is kept and reported in the next upload.
+ *
+ * Finally, there are also APIs to 'add' objects to the payload. These objects are considered static,
+ * or otherwise, not important enough to post them to the server in the case there are no tracked events.
+ * Static objects will survive sessions though, so once added, they will be reported in the next payload
+ * whenever it happens. Note, also that, unlike tracked events, added objects/events can be removed by
+ * passing in `null`. Alternatively, client can remove all static values with the API, `clearStaticValues()`.
  *
  *      addObject(String key, JSONObject customEvent)
  *      addString(String key, String customString)
  *      addInt(String key, Integer customInt)
  *      addDouble(String key, Double customDouble)
  *      addArray(String key, JSONArray customArray)
+ *
+ *      clearStaticValues()
  * 
  * Note, on the server side, 'session' has a different (business logic) meaning and lasts across multiple
  * app visibility lifecycles.
@@ -106,27 +110,29 @@ public class BranchAnalytics {
     }
 
     /**
-     * `addXXX` APIs add the XXX entity to top level of the payload. These values are treated as static
-     * and not related to the user behavior. If static data is the only data passed to analytics during
-     * this session, we will treat it as an empty session and will not make the upload to the servers.
+     * `addXXX(key, value)` APIs add the XXX entity to top level of the payload. These values are treated as static
+     * and not related to the user behavior. If static data is the only data passed to the analytics
+     * module during this session, analytics module will treat it as an empty session and will not make
+     * the upload to the server. Note, each of the addXXX(key, value) APIs accepts `null` as value, in
+     * which case the associated value is removed.
      */
-    public void addObject(@NonNull String key, @NonNull JSONObject staticObject) {
+    public void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
         analyticsInternal.addObject(key, staticObject);// (e.g. 'device_info', 'sdk_configuration')
     }
 
-    public void addString(@NonNull String key, @NonNull String staticString) {
+    public void addString(@NonNull String key, @Nullable String staticString) {
         analyticsInternal.addString(key, staticString);// (e.g. 'branch_key')
     }
 
-    public void addInt(@NonNull String key, @NonNull Integer staticInt) {
+    public void addInt(@NonNull String key, @Nullable Integer staticInt) {
         analyticsInternal.addInt(key, staticInt);// (e.g. ??)
     }
 
-    public void addDouble(@NonNull String key, @NonNull Double staticDouble) {
+    public void addDouble(@NonNull String key, @Nullable Double staticDouble) {
         analyticsInternal.addDouble(key, staticDouble);// (e.g. ???)
     }
 
-    public void addArray(@NonNull String key, @NonNull JSONArray staticArray) {
+    public void addArray(@NonNull String key, @Nullable JSONArray staticArray) {
         analyticsInternal.addArray(key, staticArray);// (e.g. ???)
     }
 
@@ -142,6 +148,14 @@ public class BranchAnalytics {
      */
     public static String getAnalyticsWindowId() {
         return analyticsInternal.sessionId;
+    }
+
+    /**
+     * Clear values added via the addXXX(key, XXX) APIs,
+     * you may also delete individual values by passing in `null` e.g. addXXX(key, null)
+     */
+    public static void clearStaticValues() {
+        analyticsInternal.clearStaticValues();
     }
 
     public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
