@@ -4,7 +4,6 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,12 +20,15 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Area;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Timestamp;
 
 // todo register receiver for ACTION_SHUTDOWN intent to clean up (https://developer.android.com/reference/android/content/Intent.html#ACTION_SHUTDOWN)
 class BranchAnalyticsInternal implements LifecycleObserver {
     private static final String BNC_ANALYTICS_NO_VAL = "BNC_ANALYTICS_NO_VAL";
 
     @NonNull String sessionId = BNC_ANALYTICS_NO_VAL;
+    static BranchAnalyticsInternal instance;
 
     // default clicks and impressions
     private List<JSONObject> clicks = Collections.synchronizedList(new LinkedList<JSONObject>());
@@ -51,6 +53,13 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     private final ConcurrentHashMap<String, JSONArray> staticArrays = new ConcurrentHashMap<>();// e.g. ???
 
     private int emptySessionCount = 0;
+
+    static BranchAnalyticsInternal getInstance() {
+        if (instance == null) {
+            instance = new BranchAnalyticsInternal();
+        }
+        return instance;
+    }
 
     /**
      * Start collecting data
@@ -118,19 +127,27 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         }
     }
 
-    void trackImpression(@NonNull TrackedEntity entity) {
+    void trackImpression(@NonNull TrackedEntity entity, float area) {
         if (entity.getImpressionJson() == null) return;
+
+        JSONObject impression = entity.getImpressionJson();
+        try {
+            impression = impression.put(Area.getKey(), area);
+            impression = impression.put(Timestamp.getKey(), System.currentTimeMillis());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         if (TextUtils.isEmpty(entity.getAPI())) {
             // write to default impressions
-            impressions.add(entity.getImpressionJson());
+            impressions.add(impression);
         } else {
             synchronized (impressionsPerApi) {
                 List<JSONObject> apiImpressions = impressionsPerApi.get(entity.getAPI());
                 if (apiImpressions == null) {
                     apiImpressions = new LinkedList<JSONObject>();
                 }
-                apiImpressions.add(entity.getImpressionJson());
+                apiImpressions.add(impression);
                 impressionsPerApi.put(entity.getAPI(), apiImpressions);
             }
         }

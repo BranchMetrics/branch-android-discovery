@@ -24,13 +24,8 @@ class BranchImpressionTracking {
     private static Map<View, ViewTracker> sTrackers = new WeakHashMap<>();
     private static Set<Integer> sImpressionIds = new HashSet<>();
 
-    private static final Object sSendLock = new Object();
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            throw new IllegalStateException("Impression tracking will only work on API 18+.");
-        }
         ViewTracker tracker;
         if (sTrackers.containsKey(view)) {
             tracker = sTrackers.get(view);
@@ -52,18 +47,6 @@ class BranchImpressionTracking {
         // Record the ID so it's not saved twice.
         boolean isNew = sImpressionIds.add(result.getImpressionJson().hashCode());
         if (!isNew) return;
-
-        synchronized (sSendLock) {
-            // Record into shared preferences as a simple JSON string.
-            JSONObject object = new JSONObject();
-            try {
-                object.put("entity", result.getImpressionJson());
-                object.put("area", area);
-                object.put("timestamp", System.currentTimeMillis());
-            } catch (JSONException e) {
-                return;
-            }
-            BranchAnalytics.trackImpression(result);
-        }
+        BranchAnalyticsInternal.getInstance().trackImpression(result, area);
     }
 }

@@ -67,7 +67,7 @@ public class BranchAnalytics {
      */
     public static void init(Context application) {
         appContext = new WeakReference<Context>(application);
-        analyticsInternal = new BranchAnalyticsInternal();
+        analyticsInternal = BranchAnalyticsInternal.getInstance();
         ProcessLifecycleOwner.get().getLifecycle().addObserver(analyticsInternal);
     }
 
@@ -78,11 +78,6 @@ public class BranchAnalytics {
     public static void trackClick(@NonNull TrackedEntity click, @NonNull String clickType) {
         if (click.getClickJson() == null) return;
         analyticsInternal.registerClick(click, clickType);
-    }
-
-    static void trackImpression(@NonNull TrackedEntity impression) {
-        if (impression.getImpressionJson() == null) return;
-        analyticsInternal.trackImpression(impression);
     }
 
     /**
