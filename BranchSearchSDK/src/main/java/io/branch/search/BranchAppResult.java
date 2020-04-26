@@ -226,8 +226,7 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
                         deepviewExtraText,
                         isInstalled,
                         requestId,
-                        linkResult.optString(KEY_RESULT_ID, UUID.randomUUID().toString()));
-//                        linkResult.optString(KEY_RESULT_ID));
+                        linkResult.optString(KEY_RESULT_ID, UUID.randomUUID().toString()));// todo remove default value when v2 linking is rolled out
                 if (link != null) {
                     links.add(link);
                 }

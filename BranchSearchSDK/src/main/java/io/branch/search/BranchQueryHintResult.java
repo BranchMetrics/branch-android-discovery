@@ -50,6 +50,7 @@ public class BranchQueryHintResult implements Parcelable {
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     hints.add(new BranchQueryHint(jsonArray.getString(i), requestId, UUID.randomUUID().toString()));
+                    // todo when v2 linking is rolled out, replace above line with below
 //                    JSONObject hintResult = jsonArray.getJSONObject(i);
 //                    hints.add(new BranchQueryHint(
 //                            hintResult.getString(KEY_SUGGESTION),

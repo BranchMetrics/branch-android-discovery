@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 
@@ -20,11 +19,11 @@ import org.json.JSONObject;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Iterator;
 
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.sdk.android.search.analytics.TrackedEntity;
 
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.EntityId;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Search;
@@ -584,7 +583,8 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     public JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
-            impression.putOpt(ResultId.getKey(), getEntityID());
+            impression.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
+            impression.putOpt(ResultId.getKey(), getResultId());
             impression.putOpt(RequestId.getKey(), getRequestId());
         } catch (JSONException ignored) {}
         return impression;
@@ -594,7 +594,8 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     public JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
-            click.putOpt(ResultId.getKey(), getEntityID());
+            click.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
+            click.putOpt(ResultId.getKey(), getResultId());
             click.putOpt(RequestId.getKey(), getRequestId());
         } catch (JSONException ignored) {}
         return click;

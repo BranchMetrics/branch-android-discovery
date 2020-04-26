@@ -16,6 +16,7 @@ public class Defines {
         EmptySessions("empty_sessions"),
         RequestId("request_id"),
         ResultId("result_id"),
+        EntityId("entity_id"),
         Timestamp("timestamp"),
         Hint("hint"),
         Autosuggestion("autosuggestion"),
