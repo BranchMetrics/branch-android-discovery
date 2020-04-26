@@ -299,6 +299,7 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     @Nullable
     public BranchSearchError openContent(@NonNull Context context, boolean fallbackToPlayStore) {
         registerClickEvent();
+        BranchAnalytics.trackClick(this, BranchLinkResult.ClickType.Content.toString().toLowerCase());
         boolean hasApp = Util.isAppInstalled(context, destination_store_id);
         boolean hasPlayStore = Util.isAppInstalled(context, PLAY_STORE_PACKAGE_NAME);
 

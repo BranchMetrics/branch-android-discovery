@@ -164,7 +164,7 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
      * @return BranchSearchError Return  {@link BranchSearchError} in case of an error else null
      */
     public BranchSearchError openApp(Context context, boolean fallbackToPlayStore) {
-        BranchAnalytics.trackClick(this, BranchLinkResult.ClickType.Content.toString());
+        BranchAnalytics.trackClick(this, BranchLinkResult.ClickType.Content.toString().toLowerCase());
         return Util.openApp(context,fallbackToPlayStore, app_store_id)? null : new BranchSearchError(BranchSearchError.ERR_CODE.ROUTING_ERR_UNABLE_TO_OPEN_APP);
     }
 
