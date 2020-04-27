@@ -18,6 +18,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -25,6 +26,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.StreamResetException;
+
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
 
 /**
  * URLConnection Task.
@@ -138,6 +141,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
         // If POST, we should have Content-Type: application/json in the request,
         // but this should be already done by OkHttp when creating the post body.
         mBuilder.addHeader("Accept", "application/json");
+        mBuilder.addHeader(AnalyticsWindowId.getKey(), BranchAnalytics.getAnalyticsWindowId());
         // Do NOT add "Accept-Encoding"! Instead, rely on OkHttp adding that automatically,
         // which is done in their BridgeInterceptor. If we do add 'just to be sure', then
         // OkHttp will not automatically unzip the response, which would be an issue.

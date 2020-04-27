@@ -6,6 +6,9 @@ public class Defines {
 
     public enum AnalyticsJsonKey {
         // API keys
+        AnalyticsWindowId("analytics_window_id"),
+
+        // API keys
         Hints("hints"),
         Autosuggest("autosuggest"),
         Search("search"),
