@@ -16,12 +16,14 @@ public class Defines {
         // array keys
         Clicks("clicks"),
         Impressions("impressions"),
+        ApiPerformance("api_performance"),
 
         // value keys
         BranchKey("branch_key"),
         DeviceInfo("device_info"),
         ConfigInfo("config_info"),
         EmptySessions("empty_sessions"),
+        PackageName("package_name"),// todo potentially remove this, used temporarily to track BranchAppResult which does not have result_id field
         RequestId("request_id"),
         ResultId("result_id"),
         EntityId("entity_id"),

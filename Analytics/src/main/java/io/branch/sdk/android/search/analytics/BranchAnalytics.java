@@ -63,16 +63,11 @@ import java.lang.ref.WeakReference;
 public class BranchAnalytics {
     static final String LOGTAG = "BranchAnalytics";
 
-    private static WeakReference<Context> appContext;
-    private static BranchAnalyticsInternal analyticsInternal;
-
     /**
      * Initialize Analytics in App.onCreate()
      */
     public static void init(Context application) {
-        appContext = new WeakReference<Context>(application);
-        analyticsInternal = BranchAnalyticsInternal.getInstance();
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(analyticsInternal);
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(BranchAnalyticsInternal.getInstance());
     }
 
     /**
@@ -81,7 +76,7 @@ public class BranchAnalytics {
      */
     public static void trackClick(@NonNull TrackedEntity click, @NonNull String clickType) {
         if (click.getClickJson() == null) return;
-        analyticsInternal.registerClick(click, clickType);
+        BranchAnalyticsInternal.getInstance().registerClick(click, clickType);
     }
 
     /**
@@ -90,23 +85,23 @@ public class BranchAnalytics {
      * user behavior and the module will proceed to make the upload to the server.
      */
     public static void trackObject(@NonNull String key, @NonNull JSONObject customEvent) {
-        analyticsInternal.trackObject(key, customEvent);
+        BranchAnalyticsInternal.getInstance().trackObject(key, customEvent);
     }
 
     public static void trackString(@NonNull String key, @NonNull String customString) {
-        analyticsInternal.trackString(key, customString);
+        BranchAnalyticsInternal.getInstance().trackString(key, customString);
     }
 
     public static void trackInt(@NonNull String key, Integer customInt) {
-        analyticsInternal.trackInt(key, customInt);
+        BranchAnalyticsInternal.getInstance().trackInt(key, customInt);
     }
 
     public static void trackDouble(@NonNull String key, @NonNull Double customDouble) {
-        analyticsInternal.trackDouble(key, customDouble);
+        BranchAnalyticsInternal.getInstance().trackDouble(key, customDouble);
     }
 
     public static void trackArray(@NonNull String key, @NonNull JSONArray customArray) {
-        analyticsInternal.trackArray(key, customArray);
+        BranchAnalyticsInternal.getInstance().trackArray(key, customArray);
     }
 
     /**
@@ -116,38 +111,38 @@ public class BranchAnalytics {
      * the upload to the server. Note, each of the addXXX(key, value) APIs accepts `null` as value, in
      * which case the associated value is removed.
      */
-    public void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
-        analyticsInternal.addObject(key, staticObject);// (e.g. 'device_info', 'sdk_configuration')
+    public static void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
+        BranchAnalyticsInternal.getInstance().addObject(key, staticObject);// (e.g. 'device_info', 'sdk_configuration')
     }
 
-    public void addString(@NonNull String key, @Nullable String staticString) {
-        analyticsInternal.addString(key, staticString);// (e.g. 'branch_key')
+    public static void addString(@NonNull String key, @Nullable String staticString) {
+        BranchAnalyticsInternal.getInstance().addString(key, staticString);// (e.g. 'branch_key')
     }
 
-    public void addInt(@NonNull String key, @Nullable Integer staticInt) {
-        analyticsInternal.addInt(key, staticInt);// (e.g. ??)
+    public static void addInt(@NonNull String key, @Nullable Integer staticInt) {
+        BranchAnalyticsInternal.getInstance().addInt(key, staticInt);// (e.g. ??)
     }
 
-    public void addDouble(@NonNull String key, @Nullable Double staticDouble) {
-        analyticsInternal.addDouble(key, staticDouble);// (e.g. ???)
+    public static void addDouble(@NonNull String key, @Nullable Double staticDouble) {
+        BranchAnalyticsInternal.getInstance().addDouble(key, staticDouble);// (e.g. ???)
     }
 
-    public void addArray(@NonNull String key, @Nullable JSONArray staticArray) {
-        analyticsInternal.addArray(key, staticArray);// (e.g. ???)
+    public static void addArray(@NonNull String key, @Nullable JSONArray staticArray) {
+        BranchAnalyticsInternal.getInstance().addArray(key, staticArray);// (e.g. ???)
     }
 
     /**
      * Get the current state of the analytics batch
      */
     public static JSONObject getAnalyticsData() {
-        return analyticsInternal.formatPayload();
+        return BranchAnalyticsInternal.getInstance().formatPayload();
     }
 
     /**
      * Get analytics window id (so it can added to API requests for analytics data matching)
      */
     public static String getAnalyticsWindowId() {
-        return analyticsInternal.sessionId;
+        return BranchAnalyticsInternal.getInstance().sessionId;
     }
 
     /**
@@ -155,7 +150,7 @@ public class BranchAnalytics {
      * you may also delete individual values by passing in `null` e.g. addXXX(key, null)
      */
     public static void clearStaticValues() {
-        analyticsInternal.clearStaticValues();
+        BranchAnalyticsInternal.getInstance().clearStaticValues();
     }
 
     public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {

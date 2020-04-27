@@ -21,6 +21,10 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
+
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.BranchKey;
+
 /**
  * Branch Configuration.  Use the Branch Configuration to override default Search options.
  * <br><br>
@@ -145,6 +149,7 @@ public class BranchConfiguration {
     @NonNull
     public BranchConfiguration setBranchKey(@Nullable String key) {
         this.key = key;
+        BranchAnalytics.addString(BranchKey.getKey(), key);
         return this;
     }
 

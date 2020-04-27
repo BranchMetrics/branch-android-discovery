@@ -17,6 +17,7 @@ import java.util.UUID;
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.sdk.android.search.analytics.TrackedEntity;
 
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.PackageName;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
@@ -27,6 +28,7 @@ import static io.branch.search.BranchDiscoveryRequest.KEY_RESULT_ID;
  * Application Result.
  * Contains enough information to open the app or fall back to the play store.
  */
+// todo decide if we are going to track BranchAppResult at all (it does not result_id and backend does not understand it as search result)
 public class BranchAppResult implements Parcelable, TrackedEntity {
     private static final String LINK_ENTITY_ID_KEY = "entity_id";
     private static final String KEY_APP_NAME = "app_name";
@@ -226,7 +228,7 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
                         deepviewExtraText,
                         isInstalled,
                         requestId,
-                        linkResult.optString(KEY_RESULT_ID, UUID.randomUUID().toString()));// todo remove default value when v2 linking is rolled out
+                        linkResult.optString(KEY_RESULT_ID));
                 if (link != null) {
                     links.add(link);
                 }
@@ -251,7 +253,8 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
     public JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
-            impression.putOpt(ResultId.getKey(), app_store_id);
+            impression.putOpt(PackageName.getKey(), app_store_id);
+//            impression.putOpt(ResultId.getKey(), "");
             impression.putOpt(RequestId.getKey(), getRequestId());
         } catch (JSONException ignored) {}
         return impression;
@@ -261,7 +264,8 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
     public JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
-            click.putOpt(ResultId.getKey(), app_store_id);
+            click.putOpt(PackageName.getKey(), app_store_id);
+//            click.putOpt(ResultId.getKey(), "");
             click.putOpt(RequestId.getKey(), getRequestId());
         } catch (JSONException ignored) {}
         return click;

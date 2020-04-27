@@ -44,7 +44,7 @@ public class BranchAutoSuggestResult implements Parcelable {
             JSONArray jsonArray = jsonObject.optJSONArray(KEY_RESULTS);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    suggestions.add(new BranchAutoSuggestion(jsonArray.getString(i), requestId, UUID.randomUUID().toString()));
+                    suggestions.add(new BranchAutoSuggestion(jsonArray.getString(i), requestId, ""));
                     // todo when v2 linking is rolled out, replace above line with below
 //                    JSONObject autoSuggestion = jsonArray.getJSONObject(i);
 //                    suggestions.add(new BranchAutoSuggestion(

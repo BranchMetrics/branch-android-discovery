@@ -20,6 +20,7 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Random;
 
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.search.BranchAutoSuggestRequest;
 import io.branch.search.BranchAutoSuggestResult;
 import io.branch.search.BranchQueryHint;
@@ -247,6 +248,7 @@ public class HomeActivity extends AppCompatActivity implements BFSearchBox.IKeyw
         if (queryHints != null && queryHints.size() > 0) {
             int id = new Random().nextInt(queryHints.size());
             bfSearchBox.setHint(queryHints.get(id).getQuery());
+            BranchAnalytics.trackImpressions(bfSearchBox, queryHints.get(id));
         }
     }
 
