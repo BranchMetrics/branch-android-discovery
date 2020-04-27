@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ApiPerformance;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Area;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Clicks;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Impressions;
@@ -36,6 +37,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     // default clicks and impressions
     private List<JSONObject> clicks = Collections.synchronizedList(new LinkedList<JSONObject>());
     private List<JSONObject> impressions = Collections.synchronizedList(new LinkedList<JSONObject>());
+    private List<JSONObject> performanceData = Collections.synchronizedList(new LinkedList<JSONObject>());
 
     // clicks and impressions per API
     private final HashMap<String, List<JSONObject>> clicksPerApi = new HashMap<>();
@@ -101,6 +103,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         impressions.clear();
         impressionsPerApi.clear();
         clicksPerApi.clear();
+        performanceData.clear();
     }
 
     void clearStaticValues() {
@@ -120,7 +123,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         AnalyticsUtil.makeUpload(payload.toString());
     }
 
-    void registerClick(@NonNull TrackedEntity entity, @NonNull String clickType) {
+    void trackClick(@NonNull TrackedEntity entity, @NonNull String clickType) {
         JSONObject clickJson = entity.getClickJson();
         if (clickJson == null) return;
 
@@ -181,6 +184,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
             loadCustomValues(payload, staticValues);
             loadCustomValues(payload, trackedValues);
             loadClicksAndImpressions(payload);
+            loadPerformanceData(payload);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -188,18 +192,44 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         return payload;
     }
 
-    private void loadClicksAndImpressions(JSONObject payload) throws JSONException {
+    private void loadClicksAndImpressions(JSONObject payload) {
         for (Map.Entry<String, List<JSONObject>> apiClickEntry : clicksPerApi.entrySet()) {
-            payload.putOpt(apiClickEntry.getKey() + "_" + Clicks.getKey(), new JSONArray(apiClickEntry.getValue()));
+            try {
+                payload.putOpt(apiClickEntry.getKey() + "_" + Clicks.getKey(), new JSONArray(apiClickEntry.getValue()));
+            } catch (JSONException e) {
+                Log.i(LOGTAG, "failed to load clicks from api: " + apiClickEntry.getKey());
+            }
         }
         for (Map.Entry<String, List<JSONObject>> apiImpressionEntry : impressionsPerApi.entrySet()) {
-            payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions.getKey(), new JSONArray(apiImpressionEntry.getValue()));
+            try {
+                payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions.getKey(), new JSONArray(apiImpressionEntry.getValue()));
+            } catch (JSONException e) {
+                Log.i(LOGTAG, "failed to load impressions from api: " + apiImpressionEntry.getKey());
+            }
         }
         if (!clicks.isEmpty()) {
-            payload.putOpt(Clicks.getKey(), new JSONArray(clicks));
+            try {
+                payload.putOpt(Clicks.getKey(), new JSONArray(clicks));
+            } catch (JSONException e) {
+                Log.i(LOGTAG, "Failed to load generic clicks. Error: " + e.getMessage());
+            }
         }
         if (!impressions.isEmpty()) {
-            payload.putOpt(Impressions.getKey(), new JSONArray(impressions));
+            try {
+                payload.putOpt(Impressions.getKey(), new JSONArray(impressions));
+            } catch (JSONException e) {
+                Log.i(LOGTAG, "Failed to load generic impressions. Error: " + e.getMessage());
+            }
+        }
+    }
+
+    private void loadPerformanceData(@NonNull JSONObject payload) {
+        if (!performanceData.isEmpty()) {
+            try {
+                payload.putOpt(ApiPerformance.getKey(), new JSONArray(performanceData));
+            } catch (JSONException e) {
+                Log.i(LOGTAG, "failed to load api performance data");
+            }
         }
     }
 
@@ -283,5 +313,9 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         } else {
             staticArrays.put(key, staticArray);
         }
+    }
+
+    void trackRequest(@NonNull JSONObject jsonObject) {
+        performanceData.add(jsonObject);
     }
 }

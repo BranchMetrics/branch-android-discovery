@@ -10,8 +10,6 @@ import android.view.View;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
-
 /**
  * Analytics module tracks 'clicks' and 'impressions' of objects that belong to the Search SDK APIs
  * (e.g. 'BranchQueryHint', 'BranchAutoSuggestion', 'BranchAppResult'/'BranchLinkResult').
@@ -27,8 +25,6 @@ import java.lang.ref.WeakReference;
  *      'trackClick(TrackedEntity click)'                      - Called on click of some TrackedEntity
  *      TODO overload with 'boolean countRepeats'
  *
- *      TODO add a some 50 or so local variables of List objects, when we spot a new api, assign value to variable and synchronize over that list instead of impressions hashmap for all APIs
- *
  * Analytics module can also track custom (json compliant) key value pairs via the following APIs:
  *
  *      trackObject(String key, JSONObject customEvent)
@@ -36,7 +32,6 @@ import java.lang.ref.WeakReference;
  *      trackInt(String key, Integer customInt)
  *      trackDouble(String key, Double customDouble)
  *      trackArray(String key, JSONArray customArray)
- *      TODO overload the above with 'String jsonParentKey'
  *
  * If there are tracked 'clicks', 'impressions' or custom objects, the upload to the server does not
  * happen but the count of these empty sessions is kept and reported in the next upload.
@@ -76,7 +71,7 @@ public class BranchAnalytics {
      */
     public static void trackClick(@NonNull TrackedEntity click, @NonNull String clickType) {
         if (click.getClickJson() == null) return;
-        BranchAnalyticsInternal.getInstance().registerClick(click, clickType);
+        BranchAnalyticsInternal.getInstance().trackClick(click, clickType);
     }
 
     /**
@@ -157,5 +152,9 @@ public class BranchAnalytics {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             BranchImpressionTracking.trackImpressions(view, result);
         }
+    }
+
+    public static void trackRequest(@NonNull JSONObject jsonObject) {
+        BranchAnalyticsInternal.getInstance().trackRequest(jsonObject);
     }
 }

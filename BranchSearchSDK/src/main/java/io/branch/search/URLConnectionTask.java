@@ -28,6 +28,11 @@ import okhttp3.Response;
 import okhttp3.internal.http2.StreamResetException;
 
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RoundTripTime;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.StartTime;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.StatusCode;
+import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 
 /**
  * URLConnection Task.
@@ -36,6 +41,8 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
 
     private static final MediaType POST_JSON = MediaType.parse("application/json; charset=utf-8");
     private static final long CONFIG_TIMEOUT_MILLIS = 6000;
+    private static long startTimeMillis;
+    private static int statusCode;
 
     @VisibleForTesting
     static OkHttpClient sClient = new OkHttpClient.Builder()
@@ -45,6 +52,11 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
 
     private static long sLastPostRTT = -1; // Last post request round trip time
     private static long sLastGetRTT = -1; // Last get request round trip time
+
+    @Override
+    protected void onPreExecute() {
+        startTimeMillis = System.currentTimeMillis();
+    }
 
     /**
      * Creates a new task for a GET request.
@@ -118,6 +130,9 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
                 mCallbackCalled = true;
             }
         }
+        if (jsonObject.has(KEY_REQUEST_ID)) {
+            BranchAnalytics.trackRequest(getPerformanceJSON(jsonObject));
+        }
     }
 
     @Override
@@ -135,6 +150,18 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
         }
     }
 
+    private JSONObject getPerformanceJSON(JSONObject jsonObject) {
+        JSONObject result = new JSONObject();
+        try {
+            result.putOpt(RequestId.getKey(), jsonObject.optString(KEY_REQUEST_ID));
+            result.putOpt(StatusCode.getKey(), statusCode);
+            result.putOpt(StartTime.getKey(), startTimeMillis);
+            result.putOpt(RoundTripTime.getKey(), System.currentTimeMillis() - startTimeMillis);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     @Override
     protected JSONObject doInBackground(Void... voids) {
@@ -167,8 +194,8 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
 
             // Check the response code
             // If >= 500, retry or return a server error..
-            int code = response.code();
-            if (code >= 500) {
+            statusCode = response.code();
+            if (statusCode >= 500) {
                 return new BranchSearchError(BranchSearchError.ERR_CODE.INTERNAL_SERVER_ERR);
             }
 
@@ -186,8 +213,8 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
                 return new BranchSearchError(BranchSearchError.ERR_CODE.INTERNAL_SERVER_ERR);
             }
 
-            if (code == 200) {
-                // If code == 200, the response body is also our response.
+            if (statusCode == 200) {
+                // If statusCode == 200, the response body is also our response.
                 return result;
             } else {
                 // Try to parse an error.
@@ -199,8 +226,8 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
                     } else {
                         // Not 200, but does not fit our BranchSearchError scheme.
                         // Return a custom error if >= 400, otherwise return itself.
-                        if (code >= 400) {
-                            return new BranchSearchError(BranchSearchError.ERR_CODE.convert(code));
+                        if (statusCode >= 400) {
+                            return new BranchSearchError(BranchSearchError.ERR_CODE.convert(statusCode));
                         } else {
                             return result;
                         }
