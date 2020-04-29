@@ -2,14 +2,14 @@ package io.branch.sdk.android.search.analytics;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
 import java.lang.ref.WeakReference;
+
+import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
 
 /**
  * This class is responsible for checking {@link TrackedEntity} impressions on view.
@@ -102,7 +102,7 @@ class ViewTracker {
             int windowLeft = mTempArray2[0] - mTempArray1[0];
             int windowTop = mTempArray2[1] - mTempArray1[1];
             mTempRect1.offset(windowLeft, windowTop);
-            /* Log.i("Tracker", "Checking impression for [" + mResult.getName() + "]"
+            /* Logd("Checking impression for [" + mResult.getName() + "]"
                     + " viewHeight:" + mView.getHeight() + " viewVisibleHeight:" + mTempRect1.height() + " viewVisibleTop:" + mTempRect1.top
                     + " windowVisibleHeight:" + mTempRect2.height() + " windowVisibleTop:" + mTempRect2.top + " windowTop:" + windowTop); */
 
@@ -115,9 +115,9 @@ class ViewTracker {
                 if (percentage > CHECK_AREA_MIN_FRACTION) {
                     mHasImpression = true;
                     BranchImpressionTracking.recordImpression(mView.getContext(), mResult, percentage);
-                     Log.e("Tracker", "Got impression for [" + mResult.getImpressionJson() + "]");
+                     Logd("Got impression for [" + mResult.getImpressionJson() + "]");
                 } else {
-//                     Log.w("Tracker", "Missed impression for [" + mResult.getImpressionJson() + "]. Percentage: " + percentage
+//                     Logd("Missed impression for [" + mResult.getImpressionJson() + "]. Percentage: " + percentage
 //                            + ". viewWidth:" + mView.getWidth() + " viewHeight:" + mView.getHeight()
 //                            + ". visibleWidth:" + mTempRect1.width() + " visibleHeight:" + mTempRect1.height());
                 }

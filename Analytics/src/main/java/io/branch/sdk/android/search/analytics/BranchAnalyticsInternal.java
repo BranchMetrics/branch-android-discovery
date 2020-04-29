@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
+import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Area;
 import static io.branch.sdk.android.search.analytics.Defines.Handler;
@@ -82,7 +83,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onMoveToForeground() {
-        Log.d(LOGTAG, "Returning to foreground");
+        Logd("Returning to foreground");
         sessionId =  UUID.randomUUID().toString();
     }
 
@@ -93,7 +94,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
-        Log.d(LOGTAG, "Moving to background");
+        Logd("Moving to background");
         if (!isEmptySession()) {
             startUpload(formatPayload());
             cleanupSessionData();
@@ -212,28 +213,28 @@ class BranchAnalyticsInternal implements LifecycleObserver {
             try {
                 payload.putOpt(apiClickEntry.getKey() + "_" + Clicks, new JSONArray(apiClickEntry.getValue()));
             } catch (JSONException e) {
-                Log.i(LOGTAG, "failed to load clicks from api: " + apiClickEntry.getKey());
+                Logd("failed to load clicks from api: " + apiClickEntry.getKey());
             }
         }
         for (Map.Entry<String, List<JSONObject>> apiImpressionEntry : impressionsPerApi.entrySet()) {
             try {
                 payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions, new JSONArray(apiImpressionEntry.getValue()));
             } catch (JSONException e) {
-                Log.i(LOGTAG, "failed to load impressions from api: " + apiImpressionEntry.getKey());
+                Logd("failed to load impressions from api: " + apiImpressionEntry.getKey());
             }
         }
         if (!clicks.isEmpty()) {
             try {
                 payload.putOpt(Clicks, new JSONArray(clicks));
             } catch (JSONException e) {
-                Log.i(LOGTAG, "Failed to load generic clicks. Error: " + e.getMessage());
+                Logd("Failed to load generic clicks. Error: " + e.getMessage());
             }
         }
         if (!impressions.isEmpty()) {
             try {
                 payload.putOpt(Impressions, new JSONArray(impressions));
             } catch (JSONException e) {
-                Log.i(LOGTAG, "Failed to load generic impressions. Error: " + e.getMessage());
+                Logd("Failed to load generic impressions. Error: " + e.getMessage());
             }
         }
     }
@@ -256,7 +257,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
                 try {
                     payload.putOpt(allValuesOfCertainType.getKey(), allValuesOfCertainType.getValue());
                 } catch (JSONException ignored) {
-                    Log.i(LOGTAG, "failed to load values of type: " + allValuesOfCertainType.getKey());
+                    Logd("failed to load values of type: " + allValuesOfCertainType.getKey());
                 }
             }
         }

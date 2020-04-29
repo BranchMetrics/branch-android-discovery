@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -190,5 +191,16 @@ public class BranchAnalytics {
      */
     public static void clearStaticValues() {
         BranchAnalyticsInternal.getInstance().clearStaticValues();
+    }
+
+    static boolean loggingEnabled = false;
+    public static void enableLogging(boolean enable) {
+        loggingEnabled = enable;
+    }
+
+    static void Logd(String message) {
+        if (loggingEnabled) {
+            Log.d(LOGTAG, message);
+        }
     }
 }
