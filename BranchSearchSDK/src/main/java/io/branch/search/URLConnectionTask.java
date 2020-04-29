@@ -1,12 +1,10 @@
 package io.branch.search;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +12,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
@@ -51,9 +48,6 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
             .retryOnConnectionFailure(true)
             .build();
 
-    private static long sLastPostRTT = -1; // Last post request round trip time
-    private static long sLastGetRTT = -1; // Last get request round trip time
-
     @Override
     protected void onPreExecute() {
         startTimeMillis = System.currentTimeMillis();
@@ -68,15 +62,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     @NonNull
     static URLConnectionTask forGet(@NonNull String url,
                                     @Nullable IURLConnectionEvents callback) {
-        if (sLastGetRTT >= 0) {
-            url = Uri.parse(url)
-                    .buildUpon()
-                    .appendQueryParameter("lr_rtt", String.valueOf(sLastGetRTT))
-                    .build()
-                    .toString();
-            sLastGetRTT = -1;
-        }
-        return new URLConnectionTask(url, new Request.Builder().get(), callback, false);
+        return new URLConnectionTask(url, new Request.Builder().get(), callback);
     }
 
     /**
@@ -90,15 +76,9 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     static URLConnectionTask forPost(@NonNull String url,
                                      @NonNull JSONObject params,
                                      @Nullable IURLConnectionEvents callback) {
-        if (sLastPostRTT >= 0) {
-            try {
-                params.putOpt("lr_rtt", sLastPostRTT);
-            } catch (JSONException ignore) {}
-            sLastPostRTT = -1;
-        }
         Request.Builder builder = new Request.Builder()
                 .post(RequestBody.create(POST_JSON, params.toString()));
-        return new URLConnectionTask(url, builder, callback, true);
+        return new URLConnectionTask(url, builder, callback);
 
     }
 
@@ -106,18 +86,15 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     private final IURLConnectionEvents mCallback;
     private final Request.Builder mBuilder;
     private final Object mCallbackCalledLock = new Object();
-    private final boolean mIsPost;
     private boolean mCallbackCalled;
     @VisibleForTesting Call mCall;
 
     private URLConnectionTask(@NonNull String url,
                               @NonNull Request.Builder builder,
-                              @Nullable IURLConnectionEvents callback,
-                              boolean isPost) {
+                              @Nullable IURLConnectionEvents callback) {
         mUrl = url;
         mBuilder = builder;
         mCallback = callback;
-        mIsPost = isPost;
     }
 
     @Override
@@ -180,18 +157,12 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
 
     @NonNull
     private JSONObject executeRequest() {
-        long startTime = System.currentTimeMillis();
         mCall = sClient.newCall(mBuilder.build());
         Response response = null;
         try {
-            // Execute the call and save the RTT
+            // Execute the call
             response = mCall.execute();
             long endTime = System.currentTimeMillis();
-            if (mIsPost) {
-                sLastPostRTT = endTime - startTime;
-            } else {
-                sLastGetRTT = endTime - startTime;
-            }
 
             // Check the response code
             // If >= 500, retry or return a server error..
