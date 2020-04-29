@@ -37,7 +37,7 @@ public class BranchSearch {
      * @return this BranchSearch instance.
      */
     public static BranchSearch init(@NonNull Context context) {
-        BranchAnalytics.init(context);
+        BranchAnalytics.init();
         return init(context, new BranchConfiguration());
     }
 

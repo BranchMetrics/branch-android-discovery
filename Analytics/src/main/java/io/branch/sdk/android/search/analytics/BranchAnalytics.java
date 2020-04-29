@@ -57,24 +57,30 @@ import org.json.JSONObject;
  */
 public class BranchAnalytics {
     static final String LOGTAG = "BranchAnalytics";
+    private static final Object lock = new Object();
 
     /**
-     * Initialize Analytics in App.onCreate()
+     * Initialize Analytics in App.onCreate() or LauncherActivity.onCreate()
      */
-    public static void init(Context application) {
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(BranchAnalyticsInternal.getInstance());
+    public static void init() {
+        synchronized (lock) {
+            ProcessLifecycleOwner.get().getLifecycle().removeObserver(BranchAnalyticsInternal.getInstance());
+            ProcessLifecycleOwner.get().getLifecycle().addObserver(BranchAnalyticsInternal.getInstance());
+        }
     }
 
     /**
-     * Use APIs registerClickEvent and registerImpressionEvent to register default clicks and events,
-     * or split them up in the payload by "clickCategory" and "impressionCategory"
+     * Registers click events.
      */
     public static void trackClick(@NonNull TrackedEntity click, @NonNull String clickType) {
         if (click.getClickJson() == null) return;
         BranchAnalyticsInternal.getInstance().trackClick(click, clickType);
     }
 
-    //todo description
+    /**
+     * Binds view to {@link TrackedEntity}, if entity has not had an impression, the analytics module
+     * will record it once more than 50% of view is visible.
+     */
     public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             BranchImpressionTracking.trackImpressions(view, result);
@@ -136,11 +142,13 @@ public class BranchAnalytics {
     }
 
     /**
-     * `addXXX(key, value)` APIs add the XXX entity to top level of the payload. These values are treated as static
-     * and not related to the user behavior. If static data is the only data passed to the analytics
-     * module during this session, analytics module will treat it as an empty session and will not make
-     * the upload to the server. Note, each of the addXXX(key, value) APIs accepts `null` as value, in
-     * which case the associated value is removed.
+     * `addXXX(key, XXX)` APIs add the XXX to top level of the payload. XXX is a json compliant entity.
+     * Added values are treated as static and not related to user behavior. If static data is the only
+     * data passed to the analytics module during this session, the module will treat this session as
+     * empty and will not make the upload to the server.
+     *
+     * Note, each of the addXXX(key, XXX) APIs accepts `null` as XXX value, in which case the value
+     * is removed if it exists.
      */
     public static void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
         BranchAnalyticsInternal.getInstance().addObject(key, staticObject);// (e.g. 'device_info', 'sdk_configuration')
@@ -163,16 +171,16 @@ public class BranchAnalytics {
     }
 
     /**
-     * Get the current state of the analytics batch
+     * Get the current state of the analytics data
      */
     public static JSONObject getAnalyticsData() {
         return BranchAnalyticsInternal.getInstance().formatPayload();
     }
 
     /**
-     * Get analytics window id (so it can added to API requests for analytics data matching)
+     * Get analytics window id (so it can be added to API requests for analytics data matching)
      */
-    public static String getAnalyticsWindowId() {
+    public static @NonNull String getAnalyticsWindowId() {
         return BranchAnalyticsInternal.getInstance().sessionId;
     }
 

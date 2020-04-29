@@ -17,7 +17,7 @@ import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Re
 /**
  * Represents a single auto suggest result.
  */
-public class BranchAutoSuggestion implements Parcelable, TrackedEntity {
+public class BranchAutoSuggestion extends TrackedEntity implements Parcelable {
     private final String query;
     private final String requestId;
     private final String resultId;
@@ -87,7 +87,7 @@ public class BranchAutoSuggestion implements Parcelable, TrackedEntity {
     };
 
     @Override
-    public JSONObject getImpressionJson() {
+    protected JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
             impression.putOpt(Autosuggestion.getKey(), getQuery());
@@ -98,7 +98,7 @@ public class BranchAutoSuggestion implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public JSONObject getClickJson() {
+    protected JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
             click.putOpt(Autosuggestion.getKey(), getQuery());
@@ -109,7 +109,7 @@ public class BranchAutoSuggestion implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public String getAPI() {
+    protected String getAPI() {
         return Autosuggest.getKey();
     }
 }

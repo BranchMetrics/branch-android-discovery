@@ -31,7 +31,7 @@ import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Se
 /**
  * Class for representing a a deep link to content
  */
-public class BranchLinkResult implements Parcelable, TrackedEntity {
+public class BranchLinkResult extends TrackedEntity implements Parcelable {
     public static final String ICON_CATEGORY_BUSINESS = "business";
     public static final String ICON_CATEGORY_CARS = "cars";
     public static final String ICON_CATEGORY_COMMUNICATION = "communication";
@@ -581,7 +581,7 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     };
 
     @Override
-    public JSONObject getImpressionJson() {
+    protected JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
             impression.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
@@ -592,7 +592,7 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public JSONObject getClickJson() {
+    protected JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
             click.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
@@ -603,7 +603,7 @@ public class BranchLinkResult implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public String getAPI() {
+    protected String getAPI() {
         return Search.getKey();
     }
 }

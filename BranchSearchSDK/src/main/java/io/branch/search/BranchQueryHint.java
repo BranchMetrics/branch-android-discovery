@@ -17,7 +17,7 @@ import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Re
 /**
  * Represents a single query hint result.
  */
-public class BranchQueryHint implements Parcelable, TrackedEntity {
+public class BranchQueryHint extends TrackedEntity implements Parcelable {
     private final String query;
     private final String requestId;
     private final String resultId;
@@ -87,7 +87,7 @@ public class BranchQueryHint implements Parcelable, TrackedEntity {
     };
 
     @Override
-    public JSONObject getImpressionJson() {
+    protected JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
             impression.putOpt(Hint.getKey(), getQuery());
@@ -98,7 +98,7 @@ public class BranchQueryHint implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public JSONObject getClickJson() {
+    protected JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
             click.putOpt(Hint.getKey(), getQuery());
@@ -109,7 +109,7 @@ public class BranchQueryHint implements Parcelable, TrackedEntity {
     }
 
     @Override
-    public String getAPI() {
+    protected String getAPI() {
         return Hints.getKey();
     }
 }

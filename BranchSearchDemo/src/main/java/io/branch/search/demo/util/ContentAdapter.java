@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
-import io.branch.sdk.android.search.analytics.TrackedEntity;
 import io.branch.search.BranchAppResult;
 import io.branch.search.BranchLinkResult;
 import io.branch.search.BranchSearchResult;
@@ -60,12 +58,12 @@ public class ContentAdapter extends BaseAdapter {
         if (result instanceof BranchLinkResult) {
             BranchLinkResult linkResult = (BranchLinkResult)result;
             ((ContentItem) convertView).showContent(query, linkResult);
+            BranchAnalytics.trackImpressions(convertView, linkResult);
         } else {
             // Load app header
             BranchAppResult appResult = (BranchAppResult)result;
             ((ContentItem) convertView).showAppHeader(appResult);
         }
-        BranchAnalytics.trackImpressions(convertView, (TrackedEntity) result);
         return convertView;
     }
 
