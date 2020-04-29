@@ -23,10 +23,10 @@ import java.lang.annotation.RetentionPolicy;
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.sdk.android.search.analytics.TrackedEntity;
 
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.EntityId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Search;
+import static io.branch.sdk.android.search.analytics.Defines.EntityId;
+import static io.branch.sdk.android.search.analytics.Defines.RequestId;
+import static io.branch.sdk.android.search.analytics.Defines.ResultId;
+import static io.branch.sdk.android.search.analytics.Defines.Search;
 
 /**
  * Class for representing a a deep link to content
@@ -299,7 +299,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     @Nullable
     public BranchSearchError openContent(@NonNull Context context, boolean fallbackToPlayStore) {
         registerClickEvent();
-        BranchAnalytics.trackClick(this, BranchLinkResult.ClickType.Content.toString().toLowerCase());
+        BranchAnalytics.trackClick(this, ClickType.Content.toString().toLowerCase());
         boolean hasApp = Util.isAppInstalled(context, destination_store_id);
         boolean hasPlayStore = Util.isAppInstalled(context, PLAY_STORE_PACKAGE_NAME);
 
@@ -584,9 +584,9 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     protected JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
-            impression.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
-            impression.putOpt(ResultId.getKey(), getResultId());
-            impression.putOpt(RequestId.getKey(), getRequestId());
+            impression.putOpt(EntityId, getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
+            impression.putOpt(ResultId, getResultId());
+            impression.putOpt(RequestId, getRequestId());
         } catch (JSONException ignored) {}
         return impression;
     }
@@ -595,15 +595,15 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     protected JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
-            click.putOpt(EntityId.getKey(), getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
-            click.putOpt(ResultId.getKey(), getResultId());
-            click.putOpt(RequestId.getKey(), getRequestId());
+            click.putOpt(EntityId, getEntityID());// todo remove EntityId field when v2 linking is rolled out, ResultId will be enough to keep the impression json unique to prevent duplicate impressions, while the backend can look up entity id using result id
+            click.putOpt(ResultId, getResultId());
+            click.putOpt(RequestId, getRequestId());
         } catch (JSONException ignored) {}
         return click;
     }
 
     @Override
     protected String getAPI() {
-        return Search.getKey();
+        return Search;
     }
 }

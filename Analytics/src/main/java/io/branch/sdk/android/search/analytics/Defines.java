@@ -1,60 +1,48 @@
 package io.branch.sdk.android.search.analytics;
 
-import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class Defines {
 
-    public enum AnalyticsJsonKey {
-        // API keys
-        AnalyticsWindowId("analytics_window_id"),
+    public static final String AnalyticsWindowId = "analytics_window_id";
+    public static final String Hints = "hints";
+    public static final String Autosuggest = "autosuggest";
+    public static final String Search = "search";
+    public static final String Clicks = "clicks";
+    public static final String Impressions = "impressions";
+    public static final String ApiPerformance = "api_performance";
+    public static final String StartTime = "start_time";
+    public static final String RoundTripTime = "round_trip_time";
+    public static final String Failure = "failures";
+    public static final String Source = "source";
+    public static final String Message = "message";
+    public static final String BranchKey = "branch_key";
+    public static final String DeviceInfo = "device_info";
+    public static final String ConfigInfo = "config_info";
+    public static final String EmptySessions = "empty_sessions";
+    public static final String RequestId = "request_id";
+    public static final String ResultId = "result_id";
+    public static final String EntityId = "entity_id";
+    public static final String Timestamp = "timestamp";
+    public static final String Hint = "hint";
+    public static final String Autosuggestion = "autosuggestion";
+    public static final String Rank = "rank";
+    public static final String ClickType = "click_type";
+    public static final String VirtualRequest = "virtual_request";
+    public static final String Area = "area";
+    public static final String StatusCode = "status_code";
 
-        // API keys
-        Hints("hints"),
-        Autosuggest("autosuggest"),
-        Search("search"),
-
-        // array keys
-        Clicks("clicks"),
-        Impressions("impressions"),
-
-        ApiPerformance("api_performance"),
-        StartTime("start_time"),
-        RoundTripTime("round_trip_time"),
-
-        Failure("failures"),
-        Source("source"),
-        Message("message"),
-
-        // value keys
-        BranchKey("branch_key"),
-        DeviceInfo("device_info"),
-        ConfigInfo("config_info"),
-        EmptySessions("empty_sessions"),
-        PackageName("package_name"),// todo potentially remove this, used temporarily to track BranchAppResult which does not have result_id field
-        RequestId("request_id"),
-        ResultId("result_id"),
-        EntityId("entity_id"),
-        Timestamp("timestamp"),
-        Hint("hint"),
-        Autosuggestion("autosuggestion"),
-        Rank("rank"),
-        ClickType("click_type"),
-        VirtualRequest("virtual_request"),
-        Area("area"),
-        StatusCode("status_code");
-
-        @NonNull private String key = "";
-
-        AnalyticsJsonKey(@NonNull String key) {
-            this.key = key;
-        }
-
-        @NonNull public String getKey() {
-            return key;
-        }
-
-        @Override @NonNull public String toString() {
-            return key;
-        }
-    }
+    /** The json keys for analytics module payload. */
+    @SuppressWarnings("WeakerAccess")
+    @StringDef({
+            AnalyticsWindowId, Hints, Autosuggest, Search, Clicks, Impressions, ApiPerformance,
+            StartTime, RoundTripTime, Failure, Source, Message, BranchKey, DeviceInfo, ConfigInfo,
+            EmptySessions, RequestId, ResultId, EntityId, Timestamp, Hint, Autosuggestion, Rank,
+            ClickType, VirtualRequest, Area, StatusCode
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AnalyticsJsonKey {}
 }

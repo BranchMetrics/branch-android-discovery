@@ -9,10 +9,10 @@ import org.json.JSONObject;
 
 import io.branch.sdk.android.search.analytics.TrackedEntity;
 
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Hint;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Hints;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
+import static io.branch.sdk.android.search.analytics.Defines.Hint;
+import static io.branch.sdk.android.search.analytics.Defines.Hints;
+import static io.branch.sdk.android.search.analytics.Defines.RequestId;
+import static io.branch.sdk.android.search.analytics.Defines.ResultId;
 
 /**
  * Represents a single query hint result.
@@ -90,9 +90,9 @@ public class BranchQueryHint extends TrackedEntity implements Parcelable {
     protected JSONObject getImpressionJson() {
         JSONObject impression = new JSONObject();
         try {
-            impression.putOpt(Hint.getKey(), getQuery());
-            impression.putOpt(RequestId.getKey(), getRequestId());
-            impression.putOpt(ResultId.getKey(), getResultId());
+            impression.putOpt(Hint, getQuery());
+            impression.putOpt(RequestId, getRequestId());
+            impression.putOpt(ResultId, getResultId());
         } catch (JSONException ignored) {}
         return impression;
     }
@@ -101,15 +101,15 @@ public class BranchQueryHint extends TrackedEntity implements Parcelable {
     protected JSONObject getClickJson() {
         JSONObject click = new JSONObject();
         try {
-            click.putOpt(Hint.getKey(), getQuery());
-            click.putOpt(RequestId.getKey(), getRequestId());
-            click.putOpt(ResultId.getKey(), getResultId());
+            click.putOpt(Hint, getQuery());
+            click.putOpt(RequestId, getRequestId());
+            click.putOpt(ResultId, getResultId());
         } catch (JSONException ignored) {}
         return click;
     }
 
     @Override
     protected String getAPI() {
-        return Hints.getKey();
+        return Hints;
     }
 }

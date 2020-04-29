@@ -21,13 +21,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Area;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ClickType;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Clicks;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.EmptySessions;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Impressions;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Timestamp;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
+import static io.branch.sdk.android.search.analytics.Defines.Area;
+import static io.branch.sdk.android.search.analytics.Defines.ClickType;
+import static io.branch.sdk.android.search.analytics.Defines.Clicks;
+import static io.branch.sdk.android.search.analytics.Defines.EmptySessions;
+import static io.branch.sdk.android.search.analytics.Defines.Impressions;
+import static io.branch.sdk.android.search.analytics.Defines.Timestamp;
 
 // todo register receiver for ACTION_SHUTDOWN intent to clean up (https://developer.android.com/reference/android/content/Intent.html#ACTION_SHUTDOWN)
 class BranchAnalyticsInternal implements LifecycleObserver {
@@ -143,7 +143,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         if (clickJson == null) return;
 
         try {
-            clickJson.putOpt(ClickType.getKey(), clickType);
+            clickJson.putOpt(ClickType, clickType);
         } catch (JSONException ignored) { }
 
         if (TextUtils.isEmpty(entity.getAPI())) {
@@ -166,8 +166,8 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
         JSONObject impression = entity.getImpressionJson();
         try {
-            impression = impression.put(Area.getKey(), area);
-            impression = impression.put(Timestamp.getKey(), System.currentTimeMillis());
+            impression = impression.put(Area, area);
+            impression = impression.put(Timestamp, System.currentTimeMillis());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,8 +191,8 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
         JSONObject payload = new JSONObject();
         try {
-            payload.putOpt(AnalyticsWindowId.getKey(), sessionId);
-            payload.putOpt(EmptySessions.getKey(), emptySessionCount);
+            payload.putOpt(AnalyticsWindowId, sessionId);
+            payload.putOpt(EmptySessions, emptySessionCount);
 
             loadIndividuallyRecordedValues(payload, staticValues);
             loadIndividuallyRecordedValues(payload, individuallyTrackedValues);
@@ -210,28 +210,28 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     private void loadClicksAndImpressions(JSONObject payload) {
         for (Map.Entry<String, List<JSONObject>> apiClickEntry : clicksPerApi.entrySet()) {
             try {
-                payload.putOpt(apiClickEntry.getKey() + "_" + Clicks.getKey(), new JSONArray(apiClickEntry.getValue()));
+                payload.putOpt(apiClickEntry.getKey() + "_" + Clicks, new JSONArray(apiClickEntry.getValue()));
             } catch (JSONException e) {
                 Log.i(LOGTAG, "failed to load clicks from api: " + apiClickEntry.getKey());
             }
         }
         for (Map.Entry<String, List<JSONObject>> apiImpressionEntry : impressionsPerApi.entrySet()) {
             try {
-                payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions.getKey(), new JSONArray(apiImpressionEntry.getValue()));
+                payload.putOpt(apiImpressionEntry.getKey() + "_" + Impressions, new JSONArray(apiImpressionEntry.getValue()));
             } catch (JSONException e) {
                 Log.i(LOGTAG, "failed to load impressions from api: " + apiImpressionEntry.getKey());
             }
         }
         if (!clicks.isEmpty()) {
             try {
-                payload.putOpt(Clicks.getKey(), new JSONArray(clicks));
+                payload.putOpt(Clicks, new JSONArray(clicks));
             } catch (JSONException e) {
                 Log.i(LOGTAG, "Failed to load generic clicks. Error: " + e.getMessage());
             }
         }
         if (!impressions.isEmpty()) {
             try {
-                payload.putOpt(Impressions.getKey(), new JSONArray(impressions));
+                payload.putOpt(Impressions, new JSONArray(impressions));
             } catch (JSONException e) {
                 Log.i(LOGTAG, "Failed to load generic impressions. Error: " + e.getMessage());
             }

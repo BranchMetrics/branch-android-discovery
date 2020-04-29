@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
 
 /**
  * Represents results of an auto suggest query started from

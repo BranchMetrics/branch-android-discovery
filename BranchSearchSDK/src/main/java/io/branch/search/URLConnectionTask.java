@@ -24,12 +24,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.StreamResetException;
 
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ApiPerformance;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RoundTripTime;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.StartTime;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.StatusCode;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
+import static io.branch.sdk.android.search.analytics.Defines.ApiPerformance;
+import static io.branch.sdk.android.search.analytics.Defines.RequestId;
+import static io.branch.sdk.android.search.analytics.Defines.RoundTripTime;
+import static io.branch.sdk.android.search.analytics.Defines.StartTime;
+import static io.branch.sdk.android.search.analytics.Defines.StatusCode;
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 
 /**
@@ -109,7 +109,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
             }
         }
         if (jsonObject.has(KEY_REQUEST_ID)) {
-            BranchAnalytics.trackObject(ApiPerformance.getKey(), getPerformanceJSON(jsonObject), true);
+            BranchAnalytics.trackObject(ApiPerformance, getPerformanceJSON(jsonObject), true);
         }
     }
 
@@ -131,10 +131,10 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     private JSONObject getPerformanceJSON(JSONObject jsonObject) {
         JSONObject result = new JSONObject();
         try {
-            result.putOpt(RequestId.getKey(), jsonObject.optString(KEY_REQUEST_ID));
-            result.putOpt(StatusCode.getKey(), statusCode);
-            result.putOpt(StartTime.getKey(), startTimeMillis);
-            result.putOpt(RoundTripTime.getKey(), System.currentTimeMillis() - startTimeMillis);
+            result.putOpt(RequestId, jsonObject.optString(KEY_REQUEST_ID));
+            result.putOpt(StatusCode, statusCode);
+            result.putOpt(StartTime, startTimeMillis);
+            result.putOpt(RoundTripTime, System.currentTimeMillis() - startTimeMillis);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -146,7 +146,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
         // If POST, we should have Content-Type: application/json in the request,
         // but this should be already done by OkHttp when creating the post body.
         mBuilder.addHeader("Accept", "application/json");
-        mBuilder.addHeader(AnalyticsWindowId.getKey(), BranchAnalytics.getAnalyticsWindowId());
+        mBuilder.addHeader(AnalyticsWindowId, BranchAnalytics.getAnalyticsWindowId());
         // Do NOT add "Accept-Encoding"! Instead, rely on OkHttp adding that automatically,
         // which is done in their BridgeInterceptor. If we do add 'just to be sure', then
         // OkHttp will not automatically unzip the response, which would be an issue.
