@@ -16,14 +16,9 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import io.branch.sdk.android.search.analytics.BranchAnalytics;
-
-import static io.branch.sdk.android.search.analytics.Defines.BranchKey;
 
 /**
  * Branch Configuration.  Use the Branch Configuration to override default Search options.
@@ -149,7 +144,6 @@ public class BranchConfiguration {
     @NonNull
     public BranchConfiguration setBranchKey(@Nullable String key) {
         this.key = key;
-        BranchAnalytics.addString(BranchKey, key);
         return this;
     }
 

@@ -19,7 +19,6 @@ public class Defines {
     public static final String Failure = "failures";
     public static final String Source = "source";
     public static final String Message = "message";
-    public static final String BranchKey = "branch_key";
     public static final String DeviceInfo = "device_info";
     public static final String ConfigInfo = "config_info";
     public static final String EmptySessions = "empty_sessions";
@@ -47,9 +46,9 @@ public class Defines {
     @SuppressWarnings("WeakerAccess")
     @StringDef({
             AnalyticsWindowId, Hints, Autosuggest, Search, Clicks, Impressions, ApiPerformance,
-            StartTime, RoundTripTime, Failure, Source, Message, BranchKey, DeviceInfo, ConfigInfo,
+            StartTime, RoundTripTime, Failure, Source, Message, DeviceInfo, ConfigInfo,
             EmptySessions, RequestId, ResultId, EntityId, Timestamp, Hint, Autosuggestion, Rank,
-            Handler, VirtualRequest, Area, StatusCode
+            Handler, VirtualRequest, Area, StatusCode, Shortcut, ViewIntent, Deepview, DeepviewCTA
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface AnalyticsJsonKey {}
