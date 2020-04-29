@@ -36,10 +36,11 @@ public class Defines {
     public static final String StatusCode = "status_code";
 
     // Clicked link handler types
-    // todo remove these once link handling v2 rolls out, use BranchLinkHandler.getClass().getSimpleName() instead. Expected values after link handling v2: ViewIntent, CustomIntent, LaunchIntent, Shortcut, DeepView.
-    public static final String Shortcut = "Shortcut";
-    public static final String ViewIntent = "ViewIntent";
-    public static final String Deepview = "Deepview";
+    // todo remove these once link handling v2 rolls out, use BranchLinkHandler.getClass().getSimpleName().toLowerCase() instead. Expected values after link handling v2: ViewIntent, CustomIntent, LaunchIntent, Shortcut, DeepView.
+    public static final String Shortcut = "shortcut";
+    public static final String ViewIntent = "viewIntent";
+    public static final String Deepview = "deepview";
+    public static final String DeepviewCTA = "deepview_cta";
 
     /** Predefined json keys for analytics module payload. Other keys are accepted but these are expected.
      * */

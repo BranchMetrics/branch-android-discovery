@@ -45,12 +45,15 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static io.branch.sdk.android.search.analytics.Defines.DeepviewCTA;
 
 /**
  * A dialog that can render deepviews.
@@ -212,6 +215,7 @@ public class BranchDeepViewFragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    BranchAnalytics.trackClick(link, DeepviewCTA);
                     String url = PLAY_STORE_APP_URL_PREFIX + link.getDestinationPackageName();
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     root.getContext().startActivity(intent);
