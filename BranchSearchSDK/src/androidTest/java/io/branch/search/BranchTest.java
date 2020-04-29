@@ -22,7 +22,7 @@ import io.branch.search.mock.MockActivity;
 @RunWith(AndroidJUnit4.class)
 public class BranchTest {
     private Context mContext;
-    private Activity mActivity;
+    protected Activity mActivity;
 
     @Rule
     public ActivityTestRule<MockActivity> mActivityRule =
