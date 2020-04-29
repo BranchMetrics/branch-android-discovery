@@ -74,29 +74,65 @@ public class BranchAnalytics {
         BranchAnalyticsInternal.getInstance().trackClick(click, clickType);
     }
 
+    //todo description
+    public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            BranchImpressionTracking.trackImpressions(view, result);
+        }
+    }
+
     /**
-     * `trackXXX` APIs add the XXX entity to top level of the payload and are treated as records of
-     * user behavior, thus `isEmptySession()` will return false if there is even a single record or
-     * user behavior and the module will proceed to make the upload to the server.
+     * `trackXXX(key, XXX)` is equivalent to trackXXX(key, XXX, false).
      */
     public static void trackObject(@NonNull String key, @NonNull JSONObject customEvent) {
-        BranchAnalyticsInternal.getInstance().trackObject(key, customEvent);
+        trackObject(key, customEvent, false);
     }
 
     public static void trackString(@NonNull String key, @NonNull String customString) {
-        BranchAnalyticsInternal.getInstance().trackString(key, customString);
+        trackString(key, customString, false);
     }
 
     public static void trackInt(@NonNull String key, Integer customInt) {
-        BranchAnalyticsInternal.getInstance().trackInt(key, customInt);
+        trackInt(key, customInt, false);
     }
 
     public static void trackDouble(@NonNull String key, @NonNull Double customDouble) {
-        BranchAnalyticsInternal.getInstance().trackDouble(key, customDouble);
+        trackDouble(key, customDouble, false);
     }
 
     public static void trackArray(@NonNull String key, @NonNull JSONArray customArray) {
-        BranchAnalyticsInternal.getInstance().trackArray(key, customArray);
+        trackArray(key, customArray, false);
+    }
+
+    /**
+     * `trackXXX(key, XXX, grouped)` APIs add the XXX to the payload. XXX is a json compliant entity.
+     * The placement of XXX depends on the value of 'grouped' flag.
+     *      - If 'grouped' = false, XXX will be added as a standalone value at the top level of the
+     *        payload under the specified key.
+     *     - If 'grouped' = true, XXX will be added to the array stored at the top level of the
+     *       payload under the specified key.
+     *
+     * Tracked values are treated as records of user behavior, if there is even a single record or
+     * user behavior and the module will proceed to make the upload to the server.
+     */
+    public static void trackObject(@NonNull String key, @NonNull JSONObject customEvent, boolean grouped) {
+        BranchAnalyticsInternal.getInstance().trackObject(key, customEvent, grouped);
+    }
+
+    public static void trackString(@NonNull String key, @NonNull String customString, boolean grouped) {
+        BranchAnalyticsInternal.getInstance().trackString(key, customString, grouped);
+    }
+
+    public static void trackInt(@NonNull String key, Integer customInt, boolean grouped) {
+        BranchAnalyticsInternal.getInstance().trackInt(key, customInt, grouped);
+    }
+
+    public static void trackDouble(@NonNull String key, @NonNull Double customDouble, boolean grouped) {
+        BranchAnalyticsInternal.getInstance().trackDouble(key, customDouble, grouped);
+    }
+
+    public static void trackArray(@NonNull String key, @NonNull JSONArray customArray, boolean grouped) {
+        BranchAnalyticsInternal.getInstance().trackArray(key, customArray, grouped);
     }
 
     /**
@@ -146,15 +182,5 @@ public class BranchAnalytics {
      */
     public static void clearStaticValues() {
         BranchAnalyticsInternal.getInstance().clearStaticValues();
-    }
-
-    public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            BranchImpressionTracking.trackImpressions(view, result);
-        }
-    }
-
-    public static void trackRequest(@NonNull JSONObject jsonObject) {
-        BranchAnalyticsInternal.getInstance().trackRequest(jsonObject);
     }
 }

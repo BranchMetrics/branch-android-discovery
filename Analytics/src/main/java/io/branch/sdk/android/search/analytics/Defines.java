@@ -16,7 +16,14 @@ public class Defines {
         // array keys
         Clicks("clicks"),
         Impressions("impressions"),
+
         ApiPerformance("api_performance"),
+        StartTime("start_time"),
+        RoundTripTime("round_trip_time"),
+
+        Failure("failures"),
+        Source("source"),
+        Message("message"),
 
         // value keys
         BranchKey("branch_key"),
@@ -34,8 +41,6 @@ public class Defines {
         ClickType("click_type"),
         VirtualRequest("virtual_request"),
         Area("area"),
-        StartTime("start_time"),
-        RoundTripTime("round_trip_time"),
         StatusCode("status_code");
 
         @NonNull private String key = "";

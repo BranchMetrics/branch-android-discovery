@@ -7,21 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import io.branch.sdk.android.search.analytics.BranchAnalytics;
-import io.branch.sdk.android.search.analytics.TrackedEntity;
-
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.PackageName;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ResultId;
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Search;
 import static io.branch.search.BranchDiscoveryRequest.KEY_RESULT_ID;
 
 /**
@@ -29,7 +20,7 @@ import static io.branch.search.BranchDiscoveryRequest.KEY_RESULT_ID;
  * Contains enough information to open the app or fall back to the play store.
  */
 // todo decide if we are going to track BranchAppResult at all (it does not result_id and backend does not understand it as search result)
-public class BranchAppResult implements Parcelable, TrackedEntity {
+public class BranchAppResult implements Parcelable {
     private static final String LINK_ENTITY_ID_KEY = "entity_id";
     private static final String KEY_APP_NAME = "app_name";
     private static final String KEY_APP_STORE_ID = "app_store_id";
@@ -166,7 +157,6 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
      * @return BranchSearchError Return  {@link BranchSearchError} in case of an error else null
      */
     public BranchSearchError openApp(Context context, boolean fallbackToPlayStore) {
-        BranchAnalytics.trackClick(this, BranchLinkResult.ClickType.Content.toString().toLowerCase());
         return Util.openApp(context,fallbackToPlayStore, app_store_id)? null : new BranchSearchError(BranchSearchError.ERR_CODE.ROUTING_ERR_UNABLE_TO_OPEN_APP);
     }
 
@@ -183,6 +173,7 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
      */
     @Deprecated
     public BranchSearchError openSearchDeepLink(Context context, boolean fallbackToPlayStore) {
+        Util.reportUseOfDeprecatedMethod(this.getClass().toString(), "openSearchDeepLink");
         return openApp(context, fallbackToPlayStore);
     }
 
@@ -247,33 +238,6 @@ public class BranchAppResult implements Parcelable, TrackedEntity {
         } else {
             return new BranchAppResult(packageName, name, iconUrl, rankingHint, score, links, requestId);
         }
-    }
-
-    @Override
-    public JSONObject getImpressionJson() {
-        JSONObject impression = new JSONObject();
-        try {
-            impression.putOpt(PackageName.getKey(), app_store_id);
-//            impression.putOpt(ResultId.getKey(), "");
-            impression.putOpt(RequestId.getKey(), getRequestId());
-        } catch (JSONException ignored) {}
-        return impression;
-    }
-
-    @Override
-    public JSONObject getClickJson() {
-        JSONObject click = new JSONObject();
-        try {
-            click.putOpt(PackageName.getKey(), app_store_id);
-//            click.putOpt(ResultId.getKey(), "");
-            click.putOpt(RequestId.getKey(), getRequestId());
-        } catch (JSONException ignored) {}
-        return click;
-    }
-
-    @Override
-    public String getAPI() {
-        return Search.getKey();
     }
 }
 

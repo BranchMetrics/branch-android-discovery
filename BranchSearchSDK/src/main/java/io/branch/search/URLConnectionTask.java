@@ -28,6 +28,7 @@ import okhttp3.Response;
 import okhttp3.internal.http2.StreamResetException;
 
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ApiPerformance;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RequestId;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.RoundTripTime;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.StartTime;
@@ -131,7 +132,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
             }
         }
         if (jsonObject.has(KEY_REQUEST_ID)) {
-            BranchAnalytics.trackRequest(getPerformanceJSON(jsonObject));
+            BranchAnalytics.trackObject(ApiPerformance.getKey(), getPerformanceJSON(jsonObject), true);
         }
     }
 

@@ -10,9 +10,16 @@ import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
+
+import io.branch.sdk.android.search.analytics.BranchAnalytics;
+
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Failure;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Message;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Source;
 
 /**
  * Created by sojanpr on 3/17/18.
@@ -171,7 +178,14 @@ class Util {
             return json.optString(key, "");
     }
 
-
+    static void reportUseOfDeprecatedMethod(@NonNull String source, @NonNull String methodName) {
+        JSONObject failureJson = new JSONObject();
+        try {
+            failureJson.put(Source.getKey(), source);
+            failureJson.put(Message.getKey(), "Use of deprecated method, " + methodName + "()");
+        } catch (JSONException ignored) {}
+        BranchAnalytics.trackObject(Failure.getKey(), failureJson, true);
+    }
 
 }
 

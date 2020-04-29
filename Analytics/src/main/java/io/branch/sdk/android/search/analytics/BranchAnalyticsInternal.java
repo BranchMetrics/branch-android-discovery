@@ -21,9 +21,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
-import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ApiPerformance;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Area;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.ClickType;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Clicks;
+import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.EmptySessions;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Impressions;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsJsonKey.Timestamp;
 
@@ -37,19 +39,26 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     // default clicks and impressions
     private List<JSONObject> clicks = Collections.synchronizedList(new LinkedList<JSONObject>());
     private List<JSONObject> impressions = Collections.synchronizedList(new LinkedList<JSONObject>());
-    private List<JSONObject> performanceData = Collections.synchronizedList(new LinkedList<JSONObject>());
 
     // clicks and impressions per API
     private final HashMap<String, List<JSONObject>> clicksPerApi = new HashMap<>();
     private final HashMap<String, List<JSONObject>> impressionsPerApi = new HashMap<>();
 
-    // tracked values
-    private final ConcurrentHashMap<String, JSONObject> trackedObjects = new ConcurrentHashMap<>();// e.g. ???
-    private final ConcurrentHashMap<String, String> trackedStrings = new ConcurrentHashMap<>();// e.g. ???
-    private final ConcurrentHashMap<String, Integer> trackedInts = new ConcurrentHashMap<>();// e.g. ???
-    private final ConcurrentHashMap<String, Double> trackedDoubles = new ConcurrentHashMap<>();// e.g. ???
-    private final ConcurrentHashMap<String, JSONArray> trackedArrays = new ConcurrentHashMap<>();// e.g. ???
-    private final ConcurrentHashMap<String, ?>[] trackedValues = new ConcurrentHashMap[]{trackedObjects, trackedStrings, trackedInts, trackedDoubles, trackedArrays};
+    private final HashMap<String, List<JSONObject>> trackedObjects = new HashMap<>();
+    private final HashMap<String, List<String>> trackedStrings = new HashMap<>();
+    private final HashMap<String, List<Integer>> trackedInts = new HashMap<>();
+    private final HashMap<String, List<Double>> trackedDoubles = new HashMap<>();
+    private final HashMap<String, List<JSONArray>> trackedArrays = new HashMap<>();
+    private final HashMap<String, List<?>>[] trackedValues = new HashMap[]{trackedObjects, trackedStrings, trackedInts, trackedDoubles, trackedArrays};
+
+
+    // individually tracked values
+    private final ConcurrentHashMap<String, JSONObject> individuallyTrackedObjects = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, String> individuallyTrackedStrings = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, Integer> individuallyTrackedInts = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, Double> individuallyTrackedDoubles = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, JSONArray> individuallyTrackedArrays = new ConcurrentHashMap<>();// e.g. ???
+    private final ConcurrentHashMap<String, ?>[] individuallyTrackedValues = new ConcurrentHashMap[]{individuallyTrackedObjects, individuallyTrackedStrings, individuallyTrackedInts, individuallyTrackedDoubles, individuallyTrackedArrays};
 
     // static values
     private final ConcurrentHashMap<String, JSONObject> staticObjects = new ConcurrentHashMap<>();// e.g. "device_info", "sdk_config"
@@ -96,14 +105,19 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
     private void cleanupSessionData() {
         emptySessionCount = 0;
-        for (ConcurrentHashMap<String, ?> trackedValuesOfCertainType : trackedValues) {
-            trackedValuesOfCertainType.clear();
-        }
+
         clicks.clear();
         impressions.clear();
+
         impressionsPerApi.clear();
         clicksPerApi.clear();
-        performanceData.clear();
+
+        for (ConcurrentHashMap<String, ?> individuallyTrackedValuesOfCertainType : individuallyTrackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
+        }
+        for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
+        }
     }
 
     void clearStaticValues() {
@@ -116,7 +130,8 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         // we ignore static payload values
         boolean noClicksOrImpressions = clicks.isEmpty() && impressions.isEmpty() && clicksPerApi.isEmpty() && impressionsPerApi.isEmpty();
         boolean noTrackedValues = trackedObjects.isEmpty() && trackedStrings.isEmpty() && trackedInts.isEmpty() && trackedDoubles.isEmpty() && trackedArrays.isEmpty();
-        return noClicksOrImpressions && noTrackedValues;
+        boolean noIndividuallyTrackedValues = individuallyTrackedObjects.isEmpty() && individuallyTrackedStrings.isEmpty() && individuallyTrackedInts.isEmpty() && individuallyTrackedDoubles.isEmpty() && individuallyTrackedArrays.isEmpty();
+        return noClicksOrImpressions && noTrackedValues && noIndividuallyTrackedValues;
     }
 
     private void startUpload(@NonNull JSONObject payload) {
@@ -128,7 +143,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         if (clickJson == null) return;
 
         try {
-            clickJson.putOpt("click_type", clickType);
+            clickJson.putOpt(ClickType.getKey(), clickType);
         } catch (JSONException ignored) { }
 
         if (TextUtils.isEmpty(entity.getAPI())) {
@@ -138,7 +153,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
             synchronized (clicksPerApi) {
                 List<JSONObject> apiClicks = clicksPerApi.get(entity.getAPI());
                 if (apiClicks == null) {
-                    apiClicks = new LinkedList<JSONObject>();
+                    apiClicks = new LinkedList<>();
                 }
                 apiClicks.add(clickJson);
                 clicksPerApi.put(entity.getAPI(), apiClicks);
@@ -164,7 +179,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
             synchronized (impressionsPerApi) {
                 List<JSONObject> apiImpressions = impressionsPerApi.get(entity.getAPI());
                 if (apiImpressions == null) {
-                    apiImpressions = new LinkedList<JSONObject>();
+                    apiImpressions = new LinkedList<>();
                 }
                 apiImpressions.add(impression);
                 impressionsPerApi.put(entity.getAPI(), apiImpressions);
@@ -176,15 +191,15 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
         JSONObject payload = new JSONObject();
         try {
-            // expected values
-            payload.putOpt("analytics_window_id", sessionId);
-            payload.putOpt("empty_sessions", emptySessionCount);
+            payload.putOpt(AnalyticsWindowId.getKey(), sessionId);
+            payload.putOpt(EmptySessions.getKey(), emptySessionCount);
 
-            // values added by client
-            loadCustomValues(payload, staticValues);
-            loadCustomValues(payload, trackedValues);
+            loadIndividuallyRecordedValues(payload, staticValues);
+            loadIndividuallyRecordedValues(payload, individuallyTrackedValues);
+
             loadClicksAndImpressions(payload);
-            loadPerformanceData(payload);
+
+            loadGroupedTrackedValues(payload);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -223,17 +238,19 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         }
     }
 
-    private void loadPerformanceData(@NonNull JSONObject payload) {
-        if (!performanceData.isEmpty()) {
-            try {
-                payload.putOpt(ApiPerformance.getKey(), new JSONArray(performanceData));
-            } catch (JSONException e) {
-                Log.i(LOGTAG, "failed to load api performance data");
+    private void loadGroupedTrackedValues(@NonNull JSONObject payload) {
+        for (HashMap<String, List<?>> trackedValuesOfType : trackedValues) {
+            for (Map.Entry<String, List<?>> trackedValuesOfTypeEntry : trackedValuesOfType.entrySet()) {
+                try {
+                    payload.putOpt(trackedValuesOfTypeEntry.getKey(), new JSONArray(trackedValuesOfTypeEntry.getValue()));
+                } catch (JSONException e) {
+                    Log.i(LOGTAG, "failed to load tracked values of type: " + trackedValuesOfTypeEntry.getValue().getClass() + " for key: " + trackedValuesOfTypeEntry.getKey());
+                }
             }
         }
     }
 
-    private void loadCustomValues(JSONObject payload, ConcurrentHashMap<String, ?>[] allValues) {
+    private void loadIndividuallyRecordedValues(JSONObject payload, ConcurrentHashMap<String, ?>[] allValues) {
         for (ConcurrentHashMap<String, ?> staticValuesOfCertainType : allValues) {
             for (Map.Entry<String, ?> allValuesOfCertainType : staticValuesOfCertainType.entrySet()) {
                 try {
@@ -245,35 +262,81 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         }
     }
 
-    /**
-     * `recordXXX` APIs add the XXX entity to top level of the payload and are treated as records of
-     * user behavior, thus `isEmptySession()` will return false if there is even a single record or user behavior
-     */
-    void trackObject(@NonNull String key, @NonNull JSONObject trackedObject) {
-        trackedObjects.put(key, trackedObject);
+    void trackObject(@NonNull String key, @NonNull JSONObject trackedObject, boolean grouped) {
+        if (!grouped) {
+            individuallyTrackedObjects.put(key, trackedObject);
+        } else {
+            synchronized (trackedObjects) {
+                List<JSONObject> groupedTrackedObjects = trackedObjects.get(key);
+                if (groupedTrackedObjects == null) {
+                    groupedTrackedObjects = new LinkedList<>();
+                }
+                groupedTrackedObjects.add(trackedObject);
+                trackedObjects.put(key, groupedTrackedObjects);
+            }
+        }
     }
 
-    void trackString(@NonNull String key, @NonNull String trackedString) {
-        trackedStrings.put(key, trackedString);
+    void trackString(@NonNull String key, @NonNull String trackedString, boolean grouped) {
+        if (!grouped) {
+            individuallyTrackedStrings.put(key, trackedString);
+        } else {
+            synchronized (trackedStrings) {
+                List<String> groupedTrackedStrings = trackedStrings.get(key);
+                if (groupedTrackedStrings == null) {
+                    groupedTrackedStrings = new LinkedList<>();
+                }
+                groupedTrackedStrings.add(trackedString);
+                trackedStrings.put(key, groupedTrackedStrings);
+            }
+        }
     }
 
-    void trackInt(@NonNull String key, @NonNull Integer trackedInt) {
-        trackedInts.put(key, trackedInt);
+    void trackInt(@NonNull String key, @NonNull Integer trackedInt, boolean grouped) {
+        if (!grouped) {
+            individuallyTrackedInts.put(key, trackedInt);
+        } else {
+            synchronized (trackedInts) {
+                List<Integer> groupedTrackedInts = trackedInts.get(key);
+                if (groupedTrackedInts == null) {
+                    groupedTrackedInts = new LinkedList<>();
+                }
+                groupedTrackedInts.add(trackedInt);
+                trackedInts.put(key, groupedTrackedInts);
+            }
+        }
     }
 
-    void trackDouble(@NonNull String key, @NonNull Double trackedDouble) {
-        trackedDoubles.put(key, trackedDouble);
+    void trackDouble(@NonNull String key, @NonNull Double trackedDouble, boolean grouped) {
+        if (!grouped) {
+            individuallyTrackedDoubles.put(key, trackedDouble);
+        } else {
+            synchronized (trackedDoubles) {
+                List<Double> groupedTrackedDoubles = trackedDoubles.get(key);
+                if (groupedTrackedDoubles == null) {
+                    groupedTrackedDoubles = new LinkedList<>();
+                }
+                groupedTrackedDoubles.add(trackedDouble);
+                trackedDoubles.put(key, groupedTrackedDoubles);
+            }
+        }
     }
 
-    void trackArray(@NonNull String key, @NonNull JSONArray trackedArray) {
-        trackedArrays.put(key, trackedArray);
+    void trackArray(@NonNull String key, @NonNull JSONArray trackedArray, boolean grouped) {
+        if (!grouped) {
+            individuallyTrackedArrays.put(key, trackedArray);
+        } else {
+            synchronized (trackedArrays) {
+                List<JSONArray> groupedTrackedArrays = trackedArrays.get(key);
+                if (groupedTrackedArrays == null) {
+                    groupedTrackedArrays = new LinkedList<>();
+                }
+                groupedTrackedArrays.add(trackedArray);
+                trackedArrays.put(key, groupedTrackedArrays);
+            }
+        }
     }
 
-    /**
-     * `addXXX` APIs add the XXX entity to top level of the payload. These values are treated as static
-     * and not related to the user behavior. If static data is the only data recorded during this session,
-     * we will treat it as an empty session and will not make the upload to the servers.
-     */
     void addObject(@NonNull String key, @Nullable JSONObject staticObject) {
         if (staticObject == null) {
             staticObjects.remove(key);
@@ -296,7 +359,6 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         } else {
             staticInts.put(key, staticInt);
         }
-        staticInts.put(key, staticInt);
     }
 
     void addDouble(@NonNull String key, @Nullable Double staticDouble) {
@@ -313,9 +375,5 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         } else {
             staticArrays.put(key, staticArray);
         }
-    }
-
-    void trackRequest(@NonNull JSONObject jsonObject) {
-        performanceData.add(jsonObject);
     }
 }
