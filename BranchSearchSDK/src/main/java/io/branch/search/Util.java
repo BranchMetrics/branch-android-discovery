@@ -17,6 +17,8 @@ import java.util.Locale;
 
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 
+import static io.branch.sdk.android.search.analytics.Defines.ConfigInfo;
+import static io.branch.sdk.android.search.analytics.Defines.DeviceInfo;
 import static io.branch.sdk.android.search.analytics.Defines.Failure;
 import static io.branch.sdk.android.search.analytics.Defines.Message;
 import static io.branch.sdk.android.search.analytics.Defines.Source;
@@ -187,5 +189,14 @@ class Util {
         BranchAnalytics.trackObject(Failure, failureJson, true);
     }
 
+    static void addDeviceInfoAndConfigurationToAnalyticsPayload(BranchDeviceInfo deviceInfo, BranchConfiguration configuration) {
+        JSONObject deviceInfoJSON = new JSONObject();
+        deviceInfo.addDeviceInfo(deviceInfoJSON);
+        BranchAnalytics.addObject(DeviceInfo, deviceInfoJSON);
+
+        JSONObject configurationJSON = new JSONObject();
+        configuration.addConfigurationInfo(configurationJSON);
+        BranchAnalytics.addObject(ConfigInfo, configurationJSON);
+    }
 }
 
