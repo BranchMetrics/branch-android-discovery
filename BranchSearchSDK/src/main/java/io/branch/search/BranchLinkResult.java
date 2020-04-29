@@ -23,10 +23,13 @@ import java.lang.annotation.RetentionPolicy;
 import io.branch.sdk.android.search.analytics.BranchAnalytics;
 import io.branch.sdk.android.search.analytics.TrackedEntity;
 
+import static io.branch.sdk.android.search.analytics.Defines.Deepview;
 import static io.branch.sdk.android.search.analytics.Defines.EntityId;
 import static io.branch.sdk.android.search.analytics.Defines.RequestId;
 import static io.branch.sdk.android.search.analytics.Defines.ResultId;
 import static io.branch.sdk.android.search.analytics.Defines.Search;
+import static io.branch.sdk.android.search.analytics.Defines.Shortcut;
+import static io.branch.sdk.android.search.analytics.Defines.ViewIntent;
 
 /**
  * Class for representing a a deep link to content
@@ -225,11 +228,6 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         return result_id;
     }
 
-    public enum ClickType {
-        Content,
-        Deepview
-    }
-
     /**
      * This method allows you to register a click event on the action, which informs Branch
      * which item was clicked, improving the rankings and personalization over time
@@ -255,7 +253,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     @Nullable
     public BranchSearchError openDeepView(@NonNull FragmentManager manager) {
         registerClickEvent();
-        BranchAnalytics.trackClick(this, ClickType.Deepview.toString().toLowerCase());
+        BranchAnalytics.trackClick(this, Deepview);// todo mark this as failure once link handling v2 comes out (openDeepView will be deprecated)
 
         // NOTE: We never return an error, but we might in a future implementation.
         // This also is consistent with openContent(Context, boolean).
@@ -280,7 +278,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         // Legacy signature of openDeepView() that uses the old, deprecated FragmentManager,
         // for ooold apps that do not want to update their activity to FragmentActivity.
         registerClickEvent();
-        BranchAnalytics.trackClick(this, ClickType.Deepview.toString().toLowerCase());
+        BranchAnalytics.trackClick(this, Deepview);// todo mark this as failure once link handling v2 comes out (openDeepView will be deprecated)
         android.app.DialogFragment fragment = BranchDeepViewFragment.getLegacyInstance(this);
         fragment.show(manager, BranchDeepViewFragment.TAG);
         return null;
@@ -299,31 +297,35 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     @Nullable
     public BranchSearchError openContent(@NonNull Context context, boolean fallbackToPlayStore) {
         registerClickEvent();
-        BranchAnalytics.trackClick(this, ClickType.Content.toString().toLowerCase());
         boolean hasApp = Util.isAppInstalled(context, destination_store_id);
         boolean hasPlayStore = Util.isAppInstalled(context, PLAY_STORE_PACKAGE_NAME);
 
         // 1. Try to open the app as an Android shortcut
         boolean success = openAppWithAndroidShortcut(context, hasApp, hasPlayStore);
+        if (success) BranchAnalytics.trackClick(this, Shortcut);
 
         // 2. Try to open the app directly with URI Scheme
         if (!success) {
             success = openAppWithUriScheme(context, hasApp, hasPlayStore);
+            if (success) BranchAnalytics.trackClick(this, ViewIntent);
         }
 
         // 3. Try opening with the web link in app
         if (!success) {
             success = openAppWithWebLink(context, hasApp, hasPlayStore, true);
+            if (success) BranchAnalytics.trackClick(this, ViewIntent);
         }
 
         // 4. Try opening with the web link in browser
         if (!success) {
             success = openAppWithWebLink(context, hasApp, hasPlayStore, false);
+            if (success) BranchAnalytics.trackClick(this, ViewIntent);
         }
 
         // 5. Fallback to the playstore
         if (!success && fallbackToPlayStore) {
             success = openAppWithPlayStore(context);
+            if (success) BranchAnalytics.trackClick(this, ViewIntent);
         }
 
         BranchSearchError err = null;

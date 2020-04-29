@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Area;
-import static io.branch.sdk.android.search.analytics.Defines.ClickType;
+import static io.branch.sdk.android.search.analytics.Defines.Handler;
 import static io.branch.sdk.android.search.analytics.Defines.Clicks;
 import static io.branch.sdk.android.search.analytics.Defines.EmptySessions;
 import static io.branch.sdk.android.search.analytics.Defines.Impressions;
@@ -143,7 +143,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         if (clickJson == null) return;
 
         try {
-            clickJson.putOpt(ClickType, clickType);
+            clickJson.putOpt(Handler, clickType);
         } catch (JSONException ignored) { }
 
         if (TextUtils.isEmpty(entity.getAPI())) {

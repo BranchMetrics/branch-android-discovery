@@ -30,18 +30,25 @@ public class Defines {
     public static final String Hint = "hint";
     public static final String Autosuggestion = "autosuggestion";
     public static final String Rank = "rank";
-    public static final String ClickType = "click_type";
+    public static final String Handler = "handler";
     public static final String VirtualRequest = "virtual_request";
     public static final String Area = "area";
     public static final String StatusCode = "status_code";
 
-    /** The json keys for analytics module payload. */
+    // Clicked link handler types
+    // todo remove these once link handling v2 rolls out, use BranchLinkHandler.getClass().getSimpleName() instead. Expected values after link handling v2: ViewIntent, CustomIntent, LaunchIntent, Shortcut, DeepView.
+    public static final String Shortcut = "Shortcut";
+    public static final String ViewIntent = "ViewIntent";
+    public static final String Deepview = "Deepview";
+
+    /** Predefined json keys for analytics module payload. Other keys are accepted but these are expected.
+     * */
     @SuppressWarnings("WeakerAccess")
     @StringDef({
             AnalyticsWindowId, Hints, Autosuggest, Search, Clicks, Impressions, ApiPerformance,
             StartTime, RoundTripTime, Failure, Source, Message, BranchKey, DeviceInfo, ConfigInfo,
             EmptySessions, RequestId, ResultId, EntityId, Timestamp, Hint, Autosuggestion, Rank,
-            ClickType, VirtualRequest, Area, StatusCode
+            Handler, VirtualRequest, Area, StatusCode
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface AnalyticsJsonKey {}
