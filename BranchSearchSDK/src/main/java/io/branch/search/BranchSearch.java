@@ -40,7 +40,7 @@ public class BranchSearch {
         BranchSearch instance = init(context, new BranchConfiguration());
         BranchAnalytics.init();
         Util.addDeviceInfoAndConfigurationToAnalyticsPayload(instance.branchDeviceInfo, instance.branchConfiguration);
-        return init(context, new BranchConfiguration());
+        return instance;
     }
 
     /**
