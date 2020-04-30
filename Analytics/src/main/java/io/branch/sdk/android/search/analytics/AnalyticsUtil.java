@@ -13,37 +13,41 @@ public class AnalyticsUtil {
     static void makeUpload(String veryLongString) {
 
         if (BranchAnalytics.loggingEnabled) {
-            // todo fix this so it doesn't print across multiple lines
-            int maxLogSize = 1000;
-            for(int i = 0; i <= veryLongString.length() / maxLogSize; i++) {
-                int start = i * maxLogSize;
-                int end = (i+1) * maxLogSize;
-                end = Math.min(end, veryLongString.length());
-                Logd(veryLongString.substring(start, end));
+            printPayload(veryLongString);
+        } else {
+            byte[] data = veryLongString.getBytes();
+            HttpsURLConnection urlConnection = null;
+            try {
+                urlConnection = (HttpsURLConnection) new URL(analyticsUploadUrl).openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setFixedLengthStreamingMode(data.length);
+                GZIPOutputStream gzipOutputStream = new GZIPOutputStream(urlConnection.getOutputStream());
+                gzipOutputStream.write(data);
+                gzipOutputStream.flush();
+                if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+                    Logd("analytics upload was successful");
+                } else {
+                    // todo add retry logic
+                }
+            } catch (Exception e) {
+                Logd("exception when uploading: " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
             }
         }
+    }
 
-        byte[] data = veryLongString.getBytes();
-        HttpsURLConnection urlConnection = null;
-        try {
-            urlConnection = (HttpsURLConnection) new URL(analyticsUploadUrl).openConnection();
-            urlConnection.setDoOutput(true);
-            urlConnection.setFixedLengthStreamingMode(data.length);
-            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(urlConnection.getOutputStream());
-            gzipOutputStream.write(data);
-            gzipOutputStream.flush();
-            if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                Logd("analytics upload was successful");
-            } else {
-                // todo add retry logic
-            }
-        } catch (Exception e) {
-            Logd("exception when uploading: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+    static void printPayload(String veryLongString) {
+        // todo fix this so it doesn't print across multiple lines
+        int maxLogSize = 1000;
+        for(int i = 0; i <= veryLongString.length() / maxLogSize; i++) {
+            int start = i * maxLogSize;
+            int end = (i+1) * maxLogSize;
+            end = Math.min(end, veryLongString.length());
+            Logd(veryLongString.substring(start, end));
         }
     }
 }

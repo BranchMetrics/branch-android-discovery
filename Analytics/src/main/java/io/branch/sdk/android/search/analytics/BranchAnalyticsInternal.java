@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
+import static io.branch.sdk.android.search.analytics.BranchAnalytics.getAnalyticsData;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Area;
 import static io.branch.sdk.android.search.analytics.Defines.Handler;
@@ -96,9 +97,11 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     public void onMoveToBackground() {
         Logd("Moving to background");
         if (!isEmptySession()) {
+            Logd("!isEmptySession");
             startUpload(formatPayload());
             cleanupSessionData();
         } else {
+            Logd("isEmptySession");
             emptySessionCount++;
         }
         sessionId = BNC_ANALYTICS_NO_VAL;
@@ -113,17 +116,22 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         impressionsPerApi.clear();
         clicksPerApi.clear();
 
-        for (ConcurrentHashMap<String, ?> individuallyTrackedValuesOfCertainType : individuallyTrackedValues) {
-            individuallyTrackedValuesOfCertainType.clear();
-        }
-        for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
-            individuallyTrackedValuesOfCertainType.clear();
-        }
+        clearTrackedValues();
+        AnalyticsUtil.printPayload(getAnalyticsData().toString());
     }
 
     void clearStaticValues() {
         for (ConcurrentHashMap<String, ?> trackedValuesOfCertainType : staticValues) {
             trackedValuesOfCertainType.clear();
+        }
+    }
+
+    void clearTrackedValues() {
+        for (ConcurrentHashMap<String, ?> individuallyTrackedValuesOfCertainType : individuallyTrackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
+        }
+        for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
         }
     }
 

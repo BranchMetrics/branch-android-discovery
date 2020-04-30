@@ -2,9 +2,11 @@ package io.branch.search;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import junit.framework.Assert;
 
@@ -16,28 +18,33 @@ import org.junit.runner.RunWith;
 
 import io.branch.search.mock.MockActivity;
 
+import static junit.framework.TestCase.assertNotNull;
+import static org.junit.Assert.assertEquals;
+
 /**
  * Base Instrumented test, which will execute on an Android device.
  */
 @RunWith(AndroidJUnit4.class)
 public class BranchTest {
     private Context mContext;
-    protected Activity mActivity;
+    private Activity mActivity;
 
     @Rule
-    public ActivityTestRule<MockActivity> mActivityRule =
-            new ActivityTestRule<>(MockActivity.class);
+    public ActivityTestRule<MockActivity> mActivityRule = new ActivityTestRule<>(MockActivity.class);
 
     @Before
     public void setUp() throws Throwable {
         mContext = InstrumentationRegistry.getTargetContext();
         mActivity = mActivityRule.getActivity();
+//        mActivity = mActivityRule.launchActivity(new Intent(mContext, MockActivity.class));
     }
 
     @After
     public void tearDown() {
         mContext = null;
-        mActivity.finish();
+//        mActivityRule.finishActivity();
+//        mActivity.finish();
+        Log.i("BranchAnalytics", "setUp");
         mActivity = null;
     }
 
@@ -58,7 +65,7 @@ public class BranchTest {
         // Context of the app under test.
         Context appContext = getTestContext();
 
-        Assert.assertEquals("io.branch.search.test", appContext.getPackageName());
+        assertEquals("io.branch.search.test", appContext.getPackageName());
     }
 
     /**
@@ -69,8 +76,7 @@ public class BranchTest {
         mActivityRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                BranchSearch search = BranchSearch.init(getUIContext());
-                Assert.assertNotNull(search);
+                assertNotNull(BranchSearch.init(getUIContext()));
             }
         });
     }

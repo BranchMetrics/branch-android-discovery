@@ -193,7 +193,11 @@ public class BranchAnalytics {
         BranchAnalyticsInternal.getInstance().clearStaticValues();
     }
 
-    static boolean loggingEnabled = false;
+    public static void clearTrackedValues() {
+        BranchAnalyticsInternal.getInstance().clearTrackedValues();
+    }
+
+    static boolean loggingEnabled = true;
     public static void enableLogging(boolean enable) {
         loggingEnabled = enable;
     }
