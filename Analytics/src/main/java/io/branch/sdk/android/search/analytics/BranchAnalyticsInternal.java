@@ -3,6 +3,7 @@ package io.branch.sdk.android.search.analytics;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -118,6 +119,10 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         }
         for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
             individuallyTrackedValuesOfCertainType.clear();
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            BranchImpressionTracking.clearImpressions();
         }
     }
 

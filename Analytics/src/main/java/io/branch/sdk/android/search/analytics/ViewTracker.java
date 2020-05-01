@@ -55,6 +55,7 @@ class ViewTracker {
     void bindTo(@NonNull TrackedEntity result) {
         mResult = result;
         mHasImpression = BranchImpressionTracking.hasTrackedImpression(result);
+        Logd("ViewTracker.bindTo, TrackedEntity = [" + result.getImpressionJson() + "], mHasImpression: " + mHasImpression);
     }
 
     private void onViewAttached() {
@@ -66,7 +67,7 @@ class ViewTracker {
         }
     }
 
-    private void onViewDetached() {
+    void onViewDetached() {
         if (mAttached) {
             // Tear down.
             mView.getViewTreeObserver().removeOnScrollChangedListener(mListener);
@@ -114,7 +115,7 @@ class ViewTracker {
                 float percentage = visibleArea / fullArea;
                 if (percentage > CHECK_AREA_MIN_FRACTION) {
                     mHasImpression = true;
-                    BranchImpressionTracking.recordImpression(mView.getContext(), mResult, percentage);
+                    BranchImpressionTracking.recordImpression(mResult, percentage);
                      Logd("Got impression for [" + mResult.getImpressionJson() + "]");
                 } else {
 //                     Logd("Missed impression for [" + mResult.getImpressionJson() + "]. Percentage: " + percentage

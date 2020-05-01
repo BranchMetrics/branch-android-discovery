@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements BFSearchBox.IKeyw
 
         // Initialize the Branch Search SDK
         BranchSearch searchSDK = BranchSearch.init(getApplicationContext());
+        BranchAnalytics.enableLogging(true);
         if (searchSDK == null) {
             Toast.makeText(this, R.string.sdk_not_initialized, Toast.LENGTH_LONG).show();
             finish();
