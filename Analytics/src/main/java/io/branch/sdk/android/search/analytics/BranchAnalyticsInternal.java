@@ -31,7 +31,10 @@ import static io.branch.sdk.android.search.analytics.Defines.EmptySessions;
 import static io.branch.sdk.android.search.analytics.Defines.Impressions;
 import static io.branch.sdk.android.search.analytics.Defines.Timestamp;
 
-// todo register receiver for ACTION_SHUTDOWN intent to clean up (https://developer.android.com/reference/android/content/Intent.html#ACTION_SHUTDOWN)
+// TODO register receiver for ACTION_SHUTDOWN intent to capture sessions that would be lost because
+//  our lifecycle observer on does fire onDestroy().
+
+// TODO add disableAnalytics() API?
 class BranchAnalyticsInternal implements LifecycleObserver {
     private static final String BNC_ANALYTICS_NO_VAL = "BNC_ANALYTICS_NO_VAL";
 
@@ -98,14 +101,14 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         Logd("Moving to background");
         if (!isEmptySession()) {
             startUpload(formatPayload());
-            cleanupSessionData();
+            clearTrackedData();
         } else {
             emptySessionCount++;
         }
         sessionId = BNC_ANALYTICS_NO_VAL;
     }
 
-    private void cleanupSessionData() {
+    void clearTrackedData() {
         emptySessionCount = 0;
 
         clicks.clear();
@@ -114,21 +117,25 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         impressionsPerApi.clear();
         clicksPerApi.clear();
 
-        for (ConcurrentHashMap<String, ?> individuallyTrackedValuesOfCertainType : individuallyTrackedValues) {
-            individuallyTrackedValuesOfCertainType.clear();
-        }
-        for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
-            individuallyTrackedValuesOfCertainType.clear();
-        }
+        clearTrackedValues();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             BranchImpressionTracking.clearImpressions();
         }
     }
 
-    void clearStaticValues() {
+    void clearStaticData() {
         for (ConcurrentHashMap<String, ?> trackedValuesOfCertainType : staticValues) {
             trackedValuesOfCertainType.clear();
+        }
+    }
+
+    void clearTrackedValues() {
+        for (ConcurrentHashMap<String, ?> individuallyTrackedValuesOfCertainType : individuallyTrackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
+        }
+        for (HashMap<String, ?> individuallyTrackedValuesOfCertainType : trackedValues) {
+            individuallyTrackedValuesOfCertainType.clear();
         }
     }
 
