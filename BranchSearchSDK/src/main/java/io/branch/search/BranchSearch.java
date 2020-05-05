@@ -38,7 +38,7 @@ public class BranchSearch {
      */
     public static BranchSearch init(@NonNull Context context) {
         BranchSearch instance = init(context, new BranchConfiguration());
-        BranchAnalytics.init();
+        BranchAnalytics.init(context);
         Util.addDeviceInfoAndConfigurationToAnalyticsPayload(instance.branchDeviceInfo, instance.branchConfiguration);
         return instance;
     }

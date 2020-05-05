@@ -3,6 +3,7 @@ package io.branch.sdk.android.search.analytics;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.branch.sdk.android.search.analytics.BranchAnalytics.LOGTAG;
 import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Area;
@@ -29,6 +29,8 @@ import static io.branch.sdk.android.search.analytics.Defines.Handler;
 import static io.branch.sdk.android.search.analytics.Defines.Clicks;
 import static io.branch.sdk.android.search.analytics.Defines.EmptySessions;
 import static io.branch.sdk.android.search.analytics.Defines.Impressions;
+import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
+import static io.branch.sdk.android.search.analytics.Defines.PreviousAnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Timestamp;
 
 // TODO register receiver for ACTION_SHUTDOWN intent to capture sessions that would be lost because
@@ -40,6 +42,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
 
     @NonNull String sessionId = BNC_ANALYTICS_NO_VAL;
     private static BranchAnalyticsInternal instance;
+    SharedPreferences sharedPreferences;
 
     // default clicks and impressions
     private List<JSONObject> clicks = Collections.synchronizedList(new LinkedList<JSONObject>());
@@ -100,8 +103,9 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     public void onMoveToBackground() {
         Logd("Moving to background");
         if (!isEmptySession()) {
-            startUpload(formatPayload());
+            AnalyticsUtil.startUpload(formatPayload().toString());
             clearTrackedData();
+            sharedPreferences.edit().putString(PreviousAnalyticsWindowId, sessionId).apply();
         } else {
             emptySessionCount++;
         }
@@ -145,10 +149,6 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         boolean noTrackedValues = trackedObjects.isEmpty() && trackedStrings.isEmpty() && trackedInts.isEmpty() && trackedDoubles.isEmpty() && trackedArrays.isEmpty();
         boolean noIndividuallyTrackedValues = individuallyTrackedObjects.isEmpty() && individuallyTrackedStrings.isEmpty() && individuallyTrackedInts.isEmpty() && individuallyTrackedDoubles.isEmpty() && individuallyTrackedArrays.isEmpty();
         return noClicksOrImpressions && noTrackedValues && noIndividuallyTrackedValues;
-    }
-
-    private void startUpload(@NonNull JSONObject payload) {
-        AnalyticsUtil.makeUpload(payload.toString());
     }
 
     void trackClick(@NonNull TrackedEntity entity, @NonNull String clickType) {
@@ -206,6 +206,7 @@ class BranchAnalyticsInternal implements LifecycleObserver {
         try {
             payload.putOpt(AnalyticsWindowId, sessionId);
             payload.putOpt(EmptySessions, emptySessionCount);
+            payload.putOpt(PreviousAnalyticsWindowId, sharedPreferences.getString(PreviousAnalyticsWindowId, null));
 
             loadIndividuallyRecordedValues(payload, staticValues);
             loadIndividuallyRecordedValues(payload, individuallyTrackedValues);

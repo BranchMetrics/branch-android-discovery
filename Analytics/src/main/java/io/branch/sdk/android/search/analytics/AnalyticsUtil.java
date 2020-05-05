@@ -12,7 +12,7 @@ import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
 public class AnalyticsUtil {
     private static final String analyticsUploadUrl = "https://34636655.ngrok.io/ingest";
 
-    static void makeUpload(final String veryLongString) {
+    static void startUpload(final String veryLongString) {
 
         if (BranchAnalytics.loggingEnabled) {
             printPayload(veryLongString);
@@ -52,7 +52,7 @@ public class AnalyticsUtil {
         }.execute(veryLongString);
     }
 
-    static void printPayload(String veryLongString) {
+    private static void printPayload(String veryLongString) {
         // todo fix this so it doesn't print across multiple lines?
         int maxLogSize = 1000;
         for(int i = 0; i <= veryLongString.length() / maxLogSize; i++) {

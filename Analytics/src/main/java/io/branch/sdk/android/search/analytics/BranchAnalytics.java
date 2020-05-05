@@ -1,6 +1,8 @@
 package io.branch.sdk.android.search.analytics;
 
 import android.arch.lifecycle.ProcessLifecycleOwner;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,9 @@ import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import static io.branch.sdk.android.search.analytics.Defines.BNC_ANALYTICS_PREFS_NAME;
+import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
 
 /**
  * Analytics module tracks 'clicks' and 'impressions' of objects that belong to the Search SDK APIs
@@ -63,17 +68,17 @@ import org.json.JSONObject;
  * Analytics module tech spec: https://www.notion.so/branchdisco/SDK-side-Analytics-Module-spec-ff2b69a0438649d287a794b7298a5f10
  */
 public class BranchAnalytics {
-    static final String LOGTAG = "BranchAnalytics";
     private static final Object lock = new Object();
 
     /**
      * Initialize Analytics in App.onCreate() or LauncherActivity.onCreate()
      */
-    public static void init() {
+    public static void init(@NonNull Context context) {
         synchronized (lock) {
             ProcessLifecycleOwner.get().getLifecycle().removeObserver(BranchAnalyticsInternal.getInstance());
             ProcessLifecycleOwner.get().getLifecycle().addObserver(BranchAnalyticsInternal.getInstance());
         }
+        BranchAnalyticsInternal.getInstance().sharedPreferences = context.getSharedPreferences(BNC_ANALYTICS_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     /**
