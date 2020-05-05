@@ -119,9 +119,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
                 mCallbackCalled = true;
             }
         }
-        if (jsonObject != null) {
-            BranchAnalytics.trackObject(ApiPerformance, getPerformanceJSON(jsonObject), true);
-        }
+        BranchAnalytics.trackObject(ApiPerformance, getPerformanceJSON(jsonObject), true);
     }
 
     @Override
@@ -142,7 +140,10 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     private JSONObject getPerformanceJSON(JSONObject jsonObject) {
         JSONObject result = new JSONObject();
         try {
-            String requestId = jsonObject.optString(KEY_REQUEST_ID);
+            String requestId = null;
+            if (jsonObject != null) {
+                requestId = jsonObject.optString(KEY_REQUEST_ID);
+            }
             result.putOpt(RequestId, !TextUtils.isEmpty(requestId) ? requestId : null);
             result.putOpt(StatusCode, statusCode);
             result.putOpt(StartTime, startTimeMillis);
