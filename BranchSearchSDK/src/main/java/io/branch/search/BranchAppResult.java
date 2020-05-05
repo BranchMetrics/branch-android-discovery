@@ -220,7 +220,7 @@ public class BranchAppResult implements Parcelable {
                         deepviewExtraText,
                         isInstalled,
                         requestId,
-                        linkResult.optInt(KEY_RESULT_ID, new Random().nextInt()));
+                        linkResult.optInt(KEY_RESULT_ID, Math.abs(new Random().nextInt())));
                 if (link != null) {
                     links.add(link);
                 }

@@ -21,7 +21,7 @@ public class BranchLinkResultTest extends BranchTest {
         // Create a BranchLinkResult that's as empty as possible - from empty JSON
         JSONObject empty = new JSONObject();
         BranchLinkResult link1 = BranchLinkResult.createFromJson(empty,
-                "appName", "appStoreId", "appIconUrl", "", true, "",new Random().nextInt());
+                "appName", "appStoreId", "appIconUrl", "", true, "", Math.abs(new Random().nextInt()));
         Assert.assertNotNull(link1);
 
         // Ensure missing fields are actually ""s, and the others were correctly set.
