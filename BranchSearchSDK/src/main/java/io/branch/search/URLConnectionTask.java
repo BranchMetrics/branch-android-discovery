@@ -3,14 +3,18 @@ package io.branch.search;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.WorkerThread;
+import android.text.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
@@ -24,12 +28,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.internal.http2.StreamResetException;
 
+import static io.branch.sdk.android.search.analytics.Defines.APIType;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.ApiPerformance;
 import static io.branch.sdk.android.search.analytics.Defines.RequestId;
 import static io.branch.sdk.android.search.analytics.Defines.RoundTripTime;
 import static io.branch.sdk.android.search.analytics.Defines.StartTime;
 import static io.branch.sdk.android.search.analytics.Defines.StatusCode;
+import static io.branch.sdk.android.search.analytics.Defines.Url;
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 
 /**
@@ -61,8 +67,9 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
      */
     @NonNull
     static URLConnectionTask forGet(@NonNull String url,
+                                    @NonNull String apiType,
                                     @Nullable IURLConnectionEvents callback) {
-        return new URLConnectionTask(url, new Request.Builder().get(), callback);
+        return new URLConnectionTask(url, apiType, new Request.Builder().get(), callback);
     }
 
     /**
@@ -74,14 +81,16 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
      */
     @NonNull
     static URLConnectionTask forPost(@NonNull String url,
+                                     @NonNull String apiType,
                                      @NonNull JSONObject params,
                                      @Nullable IURLConnectionEvents callback) {
         Request.Builder builder = new Request.Builder()
                 .post(RequestBody.create(POST_JSON, params.toString()));
-        return new URLConnectionTask(url, builder, callback);
+        return new URLConnectionTask(url, apiType, builder, callback);
 
     }
 
+    private final String apiType;
     private final String mUrl;
     private final IURLConnectionEvents mCallback;
     private final Request.Builder mBuilder;
@@ -90,11 +99,13 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     @VisibleForTesting Call mCall;
 
     private URLConnectionTask(@NonNull String url,
+                              @NonNull String apiType,
                               @NonNull Request.Builder builder,
                               @Nullable IURLConnectionEvents callback) {
         mUrl = url;
         mBuilder = builder;
         mCallback = callback;
+        this.apiType = apiType;
     }
 
     @Override
@@ -108,7 +119,7 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
                 mCallbackCalled = true;
             }
         }
-        if (jsonObject.has(KEY_REQUEST_ID)) {
+        if (jsonObject != null) {
             BranchAnalytics.trackObject(ApiPerformance, getPerformanceJSON(jsonObject), true);
         }
     }
@@ -131,9 +142,12 @@ class URLConnectionTask extends AsyncTask<Void, Void, JSONObject> {
     private JSONObject getPerformanceJSON(JSONObject jsonObject) {
         JSONObject result = new JSONObject();
         try {
-            result.putOpt(RequestId, jsonObject.optString(KEY_REQUEST_ID));
+            String requestId = jsonObject.optString(KEY_REQUEST_ID);
+            result.putOpt(RequestId, !TextUtils.isEmpty(requestId) ? requestId : null);
             result.putOpt(StatusCode, statusCode);
             result.putOpt(StartTime, startTimeMillis);
+            result.putOpt(Url, mUrl);
+            result.putOpt(APIType, apiType);
             result.putOpt(RoundTripTime, System.currentTimeMillis() - startTimeMillis);
         } catch (JSONException e) {
             e.printStackTrace();

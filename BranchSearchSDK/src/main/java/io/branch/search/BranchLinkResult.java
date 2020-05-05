@@ -236,7 +236,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         if (!TextUtils.isEmpty(click_tracking_url)) {
             // Fire off an async click event
             BranchSearch.getInstance()
-                    .getNetworkHandler(BranchSearch.Channel.SEARCH)
+                    .getNetworkHandler(BranchSearch.Channel.BRANCH_CLICK_TRACKING)
                     .executeGet(click_tracking_url, null);
         }
     }

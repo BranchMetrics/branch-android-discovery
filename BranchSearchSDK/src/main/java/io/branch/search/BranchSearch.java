@@ -18,7 +18,7 @@ import io.branch.sdk.android.search.analytics.BranchAnalytics;
  */
 public class BranchSearch {
     // Each protocol that we handle has to have its own Network channel
-    enum Channel { SEARCH, AUTOSUGGEST, QUERYHINT }
+    enum Channel { SEARCH, AUTOSUGGEST, QUERYHINT, BRANCH_CLICK_TRACKING, OTHER_CLICK_TRACKING, UNKNOWN}
 
     private static final String TAG = "BranchSearch";
     private static BranchSearch thisInstance;
@@ -84,7 +84,7 @@ public class BranchSearch {
 
         // We need a network handler for each protocol.
         for (Channel channel : Channel.values()) {
-            this.networkHandlers[channel.ordinal()] = URLConnectionNetworkHandler.initialize();
+            this.networkHandlers[channel.ordinal()] = URLConnectionNetworkHandler.initialize(channel);
         }
     }
 

@@ -34,6 +34,8 @@ public class Defines {
     public static final String Area = "area";
     public static final String StatusCode = "status_code";
     public static final String PreviousAnalyticsWindowId = "prev_analytics_window_id";
+    public static final String Url = "url";
+    public static final String APIType = "api_type";
 
     // Clicked link handler types
     // todo remove these once link handling v2 rolls out, use BranchLinkHandler.getClass().getSimpleName().toLowerCase() instead.
@@ -51,7 +53,8 @@ public class Defines {
             AnalyticsWindowId, Hints, Autosuggest, Search, Clicks, Impressions, ApiPerformance,
             StartTime, RoundTripTime, Failure, Source, Message, DeviceInfo, ConfigInfo,
             EmptySessions, RequestId, ResultId, EntityId, Timestamp, Hint, Autosuggestion, Rank,
-            Handler, VirtualRequest, Area, StatusCode, Shortcut, ViewIntent, Deepview, DeepviewCTA
+            Handler, VirtualRequest, Area, StatusCode, Shortcut, ViewIntent, Deepview, DeepviewCTA,
+            PreviousAnalyticsWindowId, Url, APIType
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface AnalyticsJsonKey {}

@@ -17,7 +17,7 @@ class BranchSearchInterface {
     private static final String BRANCH_SERVICE_ENABLED_URL_SUFFIX = ".json";
 
     @VisibleForTesting static URLConnectionNetworkHandler sRawHandler
-            = URLConnectionNetworkHandler.initialize();
+            = URLConnectionNetworkHandler.initialize(BranchSearch.Channel.UNKNOWN);
 
     static boolean search(final BranchSearchRequest request,
                           final IBranchSearchEvents callback) {

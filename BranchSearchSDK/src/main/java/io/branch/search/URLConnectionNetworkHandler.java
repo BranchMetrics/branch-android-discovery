@@ -40,13 +40,18 @@ class URLConnectionNetworkHandler {
 
     private URLConnectionTask postTask;
     private URLConnectionTask getTask;
+    private String channel;
+
+    private URLConnectionNetworkHandler(@NonNull BranchSearch.Channel channel) {
+        this.channel = channel.toString();
+    }
 
     void executePost(@NonNull String url,
                      @NonNull JSONObject payload,
                      @Nullable IURLConnectionEvents callback) {
         synchronized (lock) {
             final URLConnectionTask oldTask = postTask;
-            postTask = URLConnectionTask.forPost(url, payload, callback);
+            postTask = URLConnectionTask.forPost(url, channel, payload, callback);
             postTask.executeOnExecutor(executor);
             cancelTask(oldTask);
         }
@@ -56,7 +61,7 @@ class URLConnectionNetworkHandler {
                     @Nullable IURLConnectionEvents callback) {
         synchronized (lock) {
             final URLConnectionTask oldTask = getTask;
-            getTask = URLConnectionTask.forGet(url, callback);
+            getTask = URLConnectionTask.forGet(url, channel, callback);
             getTask.executeOnExecutor(executor);
             cancelTask(oldTask);
         }
@@ -84,8 +89,8 @@ class URLConnectionNetworkHandler {
      * @return a new URLConnectionNetworkHandler
      */
     @NonNull
-    static URLConnectionNetworkHandler initialize() {
-        return new URLConnectionNetworkHandler();
+    static URLConnectionNetworkHandler initialize(@NonNull BranchSearch.Channel channel) {
+        return new URLConnectionNetworkHandler(channel);
     }
 
 }

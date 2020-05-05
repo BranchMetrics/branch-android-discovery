@@ -51,7 +51,7 @@ public class URLConnectionTaskTest {
                 .build();
 
         // Create task and run.
-        URLConnectionTask task = URLConnectionTask.forGet("https://fakeurl.fakeurl",
+        URLConnectionTask task = URLConnectionTask.forGet("https://fakeurl.fakeurl", BranchSearch.Channel.UNKNOWN.toString(),
                 null);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
