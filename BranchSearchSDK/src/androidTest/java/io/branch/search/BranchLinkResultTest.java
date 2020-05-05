@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Random;
+
 /**
  * BranchLinkResult class tests.
  */
@@ -19,7 +21,7 @@ public class BranchLinkResultTest extends BranchTest {
         // Create a BranchLinkResult that's as empty as possible - from empty JSON
         JSONObject empty = new JSONObject();
         BranchLinkResult link1 = BranchLinkResult.createFromJson(empty,
-                "appName", "appStoreId", "appIconUrl", "", true, "","");
+                "appName", "appStoreId", "appIconUrl", "", true, "",new Random().nextInt());
         Assert.assertNotNull(link1);
 
         // Ensure missing fields are actually ""s, and the others were correctly set.

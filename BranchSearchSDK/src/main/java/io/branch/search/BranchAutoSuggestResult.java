@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
@@ -43,7 +44,7 @@ public class BranchAutoSuggestResult implements Parcelable {
             JSONArray jsonArray = jsonObject.optJSONArray(KEY_RESULTS);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    suggestions.add(new BranchAutoSuggestion(jsonArray.getString(i), requestId, ""));
+                    suggestions.add(new BranchAutoSuggestion(jsonArray.getString(i), requestId, new Random().nextInt()));
                     // todo when v2 linking is rolled out, replace above line with below
 //                    JSONObject autoSuggestion = jsonArray.getJSONObject(i);
 //                    suggestions.add(new BranchAutoSuggestion(

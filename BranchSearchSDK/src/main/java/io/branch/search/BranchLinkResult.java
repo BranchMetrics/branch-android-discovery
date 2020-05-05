@@ -109,7 +109,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
     private String android_shortcut_id;
     private String icon_category;
     private String request_id;
-    private String result_id;
+    private Integer result_id;
     String deepview_extra_text; /* read by BranchDeepViewFragment */
 
     private BranchLinkResult() {
@@ -224,7 +224,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         return request_id;
     }
 
-    public String getResultId() {
+    public Integer getResultId() {
         return result_id;
     }
 
@@ -455,7 +455,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
                                            @NonNull String appDeepviewExtraText,
                                            boolean appIsInstalled,
                                            @NonNull String requestId,
-                                           @NonNull String result_id) {
+                                           @NonNull Integer result_id) {
         BranchLinkResult link = new BranchLinkResult();
         link.entity_id = Util.optString(json, LINK_ENTITY_ID_KEY);
         link.type = Util.optString(json, LINK_TYPE_KEY);
@@ -536,7 +536,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         dest.writeString(this.icon_category);
         dest.writeString(this.deepview_extra_text);
         dest.writeString(this.request_id);
-        dest.writeString(this.result_id);
+        dest.writeInt(this.result_id);
     }
 
 
@@ -567,7 +567,7 @@ public class BranchLinkResult extends TrackedEntity implements Parcelable {
         this.icon_category = in.readString();
         this.deepview_extra_text = in.readString();
         this.request_id = in.readString();
-        this.result_id = in.readString();
+        this.result_id = in.readInt();
     }
 
     public static final Creator<BranchLinkResult> CREATOR = new Creator<BranchLinkResult>() {

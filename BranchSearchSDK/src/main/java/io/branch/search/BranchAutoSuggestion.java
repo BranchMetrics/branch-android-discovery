@@ -20,9 +20,9 @@ import static io.branch.sdk.android.search.analytics.Defines.ResultId;
 public class BranchAutoSuggestion extends TrackedEntity implements Parcelable {
     private final String query;
     private final String requestId;
-    private final String resultId;
+    private final Integer resultId;
 
-    BranchAutoSuggestion(@NonNull String query, @NonNull String requestId, @NonNull String resultId) {
+    BranchAutoSuggestion(@NonNull String query, @NonNull String requestId, @NonNull Integer resultId) {
         this.query = query;
         this.requestId = requestId;
         this.resultId = resultId;
@@ -45,7 +45,7 @@ public class BranchAutoSuggestion extends TrackedEntity implements Parcelable {
     }
 
     @NonNull
-    public String getResultId() {
+    public Integer getResultId() {
         return resultId;
     }
 
@@ -67,7 +67,7 @@ public class BranchAutoSuggestion extends TrackedEntity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(query);
         dest.writeString(requestId);
-        dest.writeString(resultId);
+        dest.writeInt(resultId);
     }
 
     public final static Creator<BranchAutoSuggestion> CREATOR = new Creator<BranchAutoSuggestion>() {
@@ -76,7 +76,7 @@ public class BranchAutoSuggestion extends TrackedEntity implements Parcelable {
             //noinspection ConstantConditions
             String query = source.readString();
             String requestId = source.readString();
-            String resultId = source.readString();
+            Integer resultId = source.readInt();
             return new BranchAutoSuggestion(query, requestId, resultId);
         }
 

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static io.branch.search.BranchDiscoveryRequest.KEY_REQUEST_ID;
 import static io.branch.search.BranchDiscoveryRequest.KEY_RESULT_ID;
@@ -219,7 +220,7 @@ public class BranchAppResult implements Parcelable {
                         deepviewExtraText,
                         isInstalled,
                         requestId,
-                        linkResult.optString(KEY_RESULT_ID));
+                        linkResult.optInt(KEY_RESULT_ID, new Random().nextInt()));
                 if (link != null) {
                     links.add(link);
                 }
