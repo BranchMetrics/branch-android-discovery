@@ -220,14 +220,7 @@ public class BranchAnalytics {
         BranchAnalyticsInternal.getInstance().clearTrackedData();
     }
 
-    static boolean loggingEnabled = true;
     public static void enableLogging(boolean enable) {
-        loggingEnabled = enable;
-    }
-
-    static void Logd(String message) {
-        if (loggingEnabled) {
-            Log.d(LOGTAG, message);
-        }
+        AnalyticsUtil.enableLogging(enable);
     }
 }

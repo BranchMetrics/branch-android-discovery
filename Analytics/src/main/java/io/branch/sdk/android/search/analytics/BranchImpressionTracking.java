@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
+import static io.branch.sdk.android.search.analytics.AnalyticsUtil.Logd;
 
 /**
  * Coordinates impression tracking, including managing {@link ViewTracker}s.

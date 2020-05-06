@@ -9,7 +9,7 @@ import android.view.ViewTreeObserver;
 
 import java.lang.ref.WeakReference;
 
-import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
+import static io.branch.sdk.android.search.analytics.AnalyticsUtil.Logd;
 
 /**
  * This class is responsible for checking {@link TrackedEntity} impressions on view.

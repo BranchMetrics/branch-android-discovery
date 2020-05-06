@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
+import static io.branch.sdk.android.search.analytics.AnalyticsUtil.Logd;
 import static io.branch.sdk.android.search.analytics.Defines.AnalyticsWindowId;
 import static io.branch.sdk.android.search.analytics.Defines.Area;
 import static io.branch.sdk.android.search.analytics.Defines.Handler;

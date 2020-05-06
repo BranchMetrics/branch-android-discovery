@@ -1,12 +1,10 @@
 package io.branch.sdk.android.search.analytics;
 
-import android.support.annotation.StringDef;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 public class Defines {
 
+    /**
+     * json keys
+     */
     public static final String AnalyticsWindowId = "analytics_window_id";
     public static final String Hints = "hints";
     public static final String Autosuggest = "autosuggest";
@@ -44,20 +42,6 @@ public class Defines {
     public static final String ViewIntent = "viewIntent";
     public static final String Deepview = "deepview";
     public static final String DeepviewCTA = "deepview_cta";
-
-    /**
-     * Predefined json keys for analytics module payload. Other keys are accepted but these are expected.
-     */
-    @SuppressWarnings("WeakerAccess")
-    @StringDef({
-            AnalyticsWindowId, Hints, Autosuggest, Search, Clicks, Impressions, ApiPerformance,
-            StartTime, RoundTripTime, Failure, Source, Message, DeviceInfo, ConfigInfo,
-            EmptySessions, RequestId, ResultId, EntityId, Timestamp, Hint, Autosuggestion, Rank,
-            Handler, VirtualRequest, Area, StatusCode, Shortcut, ViewIntent, Deepview, DeepviewCTA,
-            PreviousAnalyticsWindowId, Url, APIType
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface AnalyticsJsonKey {}
 
     /**
      * Other strings

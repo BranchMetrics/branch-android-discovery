@@ -1,20 +1,32 @@
 package io.branch.sdk.android.search.analytics;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.net.URL;
 import java.util.zip.GZIPOutputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static io.branch.sdk.android.search.analytics.BranchAnalytics.Logd;
+import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
 
-public class AnalyticsUtil {
+class AnalyticsUtil {
     private static final String analyticsUploadUrl = "https://34636655.ngrok.io/ingest";
+    private static boolean loggingEnabled = false;
+
+    static void enableLogging(boolean enable) {
+        loggingEnabled = enable;
+    }
+
+    static void Logd(String message) {
+        if (loggingEnabled) {
+            Log.d(LOGTAG, message);
+        }
+    }
 
     static void startUpload(final String veryLongString) {
 
-        if (BranchAnalytics.loggingEnabled) {
+        if (loggingEnabled) {
             printPayload(veryLongString);
         }
 
