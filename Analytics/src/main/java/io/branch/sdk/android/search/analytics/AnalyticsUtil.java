@@ -1,6 +1,7 @@
 package io.branch.sdk.android.search.analytics;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 
 import java.net.URL;
@@ -30,38 +31,40 @@ class AnalyticsUtil {
             printPayload(veryLongString);
         }
 
-        new AsyncTask<String, Void, Void>() {
-            @Override
-            protected Void doInBackground(String... strings) {
-                byte[] data = veryLongString.getBytes();
-                HttpsURLConnection urlConnection = null;
-                try {
-                    urlConnection = (HttpsURLConnection) new URL(analyticsUploadUrl).openConnection();
-                    urlConnection.setDoOutput(true);
-                    urlConnection.setRequestMethod("PUT");
-                    urlConnection.setChunkedStreamingMode(0);// 0 = default size chunks
-                    urlConnection.setRequestProperty("Content-Type", "application/json");
-                    urlConnection.setRequestProperty("Content-Encoding", "gzip");
-                    GZIPOutputStream gzipOutputStream = new GZIPOutputStream(urlConnection.getOutputStream());
-                    gzipOutputStream.write(data);
-                    gzipOutputStream.close();
-                    if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                        Logd("analytics upload was successful");
-                    } else {
-                        Logd("analytics upload was not successful, status: " + urlConnection.getResponseCode());
-                        // todo add retry logic?
+        if (!BuildConfig.DEBUG) {
+            new AsyncTask<String, Void, Void>() {
+                @Override
+                protected Void doInBackground(String... strings) {
+                    byte[] data = veryLongString.getBytes();
+                    HttpsURLConnection urlConnection = null;
+                    try {
+                        urlConnection = (HttpsURLConnection) new URL(analyticsUploadUrl).openConnection();
+                        urlConnection.setDoOutput(true);
+                        urlConnection.setRequestMethod("PUT");
+                        urlConnection.setChunkedStreamingMode(0);// 0 = default size chunks
+                        urlConnection.setRequestProperty("Content-Type", "application/json");
+                        urlConnection.setRequestProperty("Content-Encoding", "gzip");
+                        GZIPOutputStream gzipOutputStream = new GZIPOutputStream(urlConnection.getOutputStream());
+                        gzipOutputStream.write(data);
+                        gzipOutputStream.close();
+                        if (urlConnection.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+                            Logd("analytics upload was successful");
+                        } else {
+                            Logd("analytics upload was not successful, status: " + urlConnection.getResponseCode());
+                            // todo add retry logic?
+                        }
+                    } catch (Exception e) {
+                        Logd("exception when uploading: " + e.getMessage());
+                        e.printStackTrace();
+                    } finally {
+                        if (urlConnection != null) {
+                            urlConnection.disconnect();
+                        }
                     }
-                } catch (Exception e) {
-                    Logd("exception when uploading: " + e.getMessage());
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
+                    return null;
                 }
-                return null;
-            }
-        }.execute(veryLongString);
+            }.execute(veryLongString);
+        }
     }
 
     private static void printPayload(String veryLongString) {

@@ -102,12 +102,16 @@ class BranchAnalyticsInternal implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
         Logd("Moving to background");
-        if (!isEmptySession()) {
-            AnalyticsUtil.startUpload(formatPayload().toString());
-            clearTrackedData();
-            sharedPreferences.edit().putString(PreviousAnalyticsWindowId, sessionId).apply();
+        if (BranchAnalytics.isEnabled()) {
+            if (!isEmptySession()) {
+                AnalyticsUtil.startUpload(formatPayload().toString());
+                clearTrackedData();
+                sharedPreferences.edit().putString(PreviousAnalyticsWindowId, sessionId).apply();
+            } else {
+                emptySessionCount++;
+            }
         } else {
-            emptySessionCount++;
+            clearTrackedData();
         }
         sessionId = BNC_ANALYTICS_NO_VAL;
     }

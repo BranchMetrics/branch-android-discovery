@@ -2,18 +2,15 @@ package io.branch.sdk.android.search.analytics;
 
 import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static io.branch.sdk.android.search.analytics.Defines.BNC_ANALYTICS_PREFS_NAME;
-import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
 
 /**
  * Analytics module tracks 'clicks' and 'impressions' of objects that belong to the Search SDK APIs
@@ -61,6 +58,11 @@ import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
  *
  *      clearStaticData()
  *      clearTrackedData()
+ *
+ *  If client wants to enable logging or disable all user behavior tracking, it can be done via the following APIs.
+ *
+ *      enableLogging(boolean enable)
+ *      disable(boolean disable)
  * 
  * Note, on the server side, 'session' has a different meaning (based more on business logic), that
  * 'session' can last across multiple app visibility lifecycles.
@@ -69,6 +71,7 @@ import static io.branch.sdk.android.search.analytics.Defines.LOGTAG;
  */
 public class BranchAnalytics {
     private static final Object lock = new Object();
+    private static boolean disabled = false;
 
     /**
      * Initialize Analytics in App.onCreate() or LauncherActivity.onCreate()
@@ -93,7 +96,7 @@ public class BranchAnalytics {
      * Registers click events.
      */
     public static void trackClick(@NonNull TrackedEntity click, @NonNull String clickType) {
-        if (click.getClickJson() == null) return;
+        if (click.getClickJson() == null || disabled) return;
         BranchAnalyticsInternal.getInstance().trackClick(click, clickType);
     }
 
@@ -102,7 +105,7 @@ public class BranchAnalytics {
      * module will record it once more than 50% of view representing this TrackedEntity becomes visible.
      */
     public static void trackImpressions(@NonNull View view, @NonNull TrackedEntity result) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2 && !disabled) {
             BranchImpressionTracking.trackImpressions(view, result);
         }
     }
@@ -111,22 +114,27 @@ public class BranchAnalytics {
      * `trackXXX(key, XXX)` is equivalent to trackXXX(key, XXX, false).
      */
     public static void trackObject(@NonNull String key, @NonNull JSONObject customEvent) {
+        if (disabled) return;
         trackObject(key, customEvent, false);
     }
 
     public static void trackString(@NonNull String key, @NonNull String customString) {
+        if (disabled) return;
         trackString(key, customString, false);
     }
 
     public static void trackInt(@NonNull String key, Integer customInt) {
+        if (disabled) return;
         trackInt(key, customInt, false);
     }
 
     public static void trackDouble(@NonNull String key, @NonNull Double customDouble) {
+        if (disabled) return;
         trackDouble(key, customDouble, false);
     }
 
     public static void trackArray(@NonNull String key, @NonNull JSONArray customArray) {
+        if (disabled) return;
         trackArray(key, customArray, false);
     }
 
@@ -142,22 +150,27 @@ public class BranchAnalytics {
      * user behavior, the module will proceed to make the upload to the server.
      */
     public static void trackObject(@NonNull String key, @NonNull JSONObject customEvent, boolean grouped) {
+        if (disabled) return;
         BranchAnalyticsInternal.getInstance().trackObject(key, customEvent, grouped);
     }
 
     public static void trackString(@NonNull String key, @NonNull String customString, boolean grouped) {
+        if (disabled) return;
         BranchAnalyticsInternal.getInstance().trackString(key, customString, grouped);
     }
 
     public static void trackInt(@NonNull String key, Integer customInt, boolean grouped) {
+        if (disabled) return;
         BranchAnalyticsInternal.getInstance().trackInt(key, customInt, grouped);
     }
 
     public static void trackDouble(@NonNull String key, @NonNull Double customDouble, boolean grouped) {
+        if (disabled) return;
         BranchAnalyticsInternal.getInstance().trackDouble(key, customDouble, grouped);
     }
 
     public static void trackArray(@NonNull String key, @NonNull JSONArray customArray, boolean grouped) {
+        if (disabled) return;
         BranchAnalyticsInternal.getInstance().trackArray(key, customArray, grouped);
     }
 
@@ -220,7 +233,25 @@ public class BranchAnalytics {
         BranchAnalyticsInternal.getInstance().clearTrackedData();
     }
 
+    /**
+     * Enable/disable analytics module logging.
+     */
     public static void enableLogging(boolean enable) {
         AnalyticsUtil.enableLogging(enable);
+    }
+
+    /**
+     * Enable/disable tracking of user behavior (i.e. disables all trackXXX APIs and data uploads).
+     * Does not remove already tracked data until until launcher becomes invisible.
+     */
+    public static void disable(boolean disable) {
+        disabled = disable;
+    }
+
+    /**
+     * Returns true of user behavior tracking and analytics uploads are enabled. Default to true.
+     */
+    public static boolean isEnabled() {
+        return !disabled;
     }
 }
