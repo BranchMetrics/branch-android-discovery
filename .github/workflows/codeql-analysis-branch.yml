@@ -60,7 +60,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
-        brew install android-sdk
+        sudo apt update && sudo apt install android-sdk
         ./gradlew -Pci --console=plain :BranchSearchDemo:assembleDebug
       # make release
       
