@@ -60,7 +60,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
-        brew tap caskroom/cask
+        brew tap homebrew/cask
         brew cask install android-sdk
         ./gradlew -Pci --console=plain :BranchSearchDemo:assembleDebug
       # make release
